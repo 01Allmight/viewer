@@ -18,12 +18,14 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './profile.module.css';
+import { useToast } from '@/contexts/ToastContext';
 
 const MonetizationTab = () => {
     // State for Modals
     const [showAddPayment, setShowAddPayment] = useState(false);
     const [showWithdraw, setShowWithdraw] = useState(false);
     const [withdrawAmount, setWithdrawAmount] = useState('');
+    const { showToast } = useToast();
 
     // Mock data for earnings
     const [balance, setBalance] = useState(12450.50);
@@ -96,9 +98,9 @@ const MonetizationTab = () => {
             setBalance(prev => prev - amount);
             setShowWithdraw(false);
             setWithdrawAmount('');
-            alert(`Withdrawal of $${amount} initiated successfully!`);
+            showToast(`Withdrawal of $${amount} initiated successfully! 💸`, 'success');
         } else {
-            alert('Invalid amount or insufficient funds');
+            showToast('Invalid amount or insufficient funds', 'error');
         }
     };
 

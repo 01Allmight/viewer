@@ -199,6 +199,20 @@
     align-items: center;
 }
 
+.uploadHint {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.uploadMeta {
+    margin: -18px 0 0;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 500;
+}
+
 .captureButton {
     background: #0095f6;
     color: white;
@@ -319,6 +333,24 @@
     align-items: center;
     gap: 14px;
     padding: 32px 24px;
+}
+
+.mediaSummary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 24px 18px;
+    padding: 10px 12px;
+    border: 1px solid rgba(0, 149, 246, 0.12);
+    border-radius: 10px;
+    background: rgba(0, 149, 246, 0.05);
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.mediaSummary span:last-child {
+    color: #0095f6;
 }
 
 .avatar {

@@ -1,22 +1,23 @@
 :root {
-  /* Ultra-Clean Modern Light Theme */
-  --background: #f8fafc;
+  /* Refined premium light theme */
+  --background: #f4f7ff;
   --background-elevated: #ffffff;
-  --background-card: rgba(255, 255, 255, 0.85);
+  --background-card: rgba(255, 255, 255, 0.82);
   --foreground: #0f172a;
-  --foreground-muted: #64748b;
+  --foreground-muted: #52607a;
 
-  --primary: #ff3366;
-  --primary-hover: #e62255;
-  --primary-glow: rgba(255, 51, 102, 0.25);
+  --primary: #5b6cff;
+  --primary-hover: #4258f3;
+  --primary-glow: rgba(91, 108, 255, 0.2);
 
-  --secondary: #f1f5f9;
-  --secondary-hover: #e2e8f0;
+  --secondary: #eef3ff;
+  --secondary-hover: #dfe8ff;
 
   --border: rgba(15, 23, 42, 0.08);
-  --border-hover: rgba(15, 23, 42, 0.18);
+  --border-hover: rgba(15, 23, 42, 0.16);
 
   --accent: #8b5cf6;
+  --accent-soft: #c4b5fd;
 
   --danger: #ef4444;
   --success: #10b981;
@@ -26,15 +27,14 @@
   --header-height: 64px;
   --max-width: 960px;
 
-  /* Vibrant Modern Gradients */
-  --ig-gradient: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-  --premium-gradient: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
-  --gold-gradient: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+  --ig-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 28%, #ec4899 58%, #f59e0b 100%);
+  --premium-gradient: linear-gradient(135deg, #eef4ff 0%, #ffffff 42%, #f7f3ff 100%);
+  --gold-gradient: linear-gradient(135deg, #facc15 0%, #f59e0b 52%, #facc15 100%);
 
-  --neon-glow: 0 0 20px rgba(255, 51, 102, 0.15), 0 0 40px rgba(139, 92, 246, 0.08);
+  --neon-glow: 0 0 20px rgba(91, 108, 255, 0.18), 0 0 44px rgba(139, 92, 246, 0.1);
 
-  --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
-  --card-shadow-hover: 0 16px 36px -4px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+  --card-shadow: 0 10px 28px -10px rgba(15, 23, 42, 0.12), 0 4px 10px -6px rgba(15, 23, 42, 0.08);
+  --card-shadow-hover: 0 22px 46px -18px rgba(79, 70, 229, 0.18), 0 8px 20px -10px rgba(15, 23, 42, 0.12);
 
   --radius-sm: 8px;
   --radius-md: 14px;
@@ -44,7 +44,7 @@
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-smooth: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   --transition-spring: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  /* Safe Areas */
+
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
@@ -168,8 +168,9 @@ html {
 body {
   background: var(--background);
   background-image:
-    radial-gradient(circle at 5% 10%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
-    radial-gradient(circle at 95% 90%, rgba(14, 165, 233, 0.04) 0%, transparent 40%);
+    radial-gradient(circle at 5% 10%, rgba(91, 108, 255, 0.08) 0%, transparent 32%),
+    radial-gradient(circle at 90% 90%, rgba(168, 85, 247, 0.08) 0%, transparent 30%),
+    radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.06) 0%, transparent 28%);
   background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -178,14 +179,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
   font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: rgba(91, 108, 255, 0.22);
+  color: var(--foreground);
 }
 
 h1,
 h2,
 h3 {
   font-family: var(--font-syne), var(--font-inter), sans-serif;
-  letter-spacing: -0.04em;
-  line-height: 1.1;
+  letter-spacing: -0.05em;
+  line-height: 1.06;
   background: var(--ig-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -194,17 +201,17 @@ h3 {
 }
 
 h1 {
-  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  font-size: clamp(1.7rem, 5vw, 2.4rem);
   font-weight: 800;
 }
 
 h2 {
-  font-size: clamp(1.3rem, 4vw, 1.6rem);
+  font-size: clamp(1.35rem, 3.8vw, 1.8rem);
   font-weight: 800;
 }
 
 h3 {
-  font-size: clamp(1.1rem, 3vw, 1.3rem);
+  font-size: clamp(1.15rem, 3vw, 1.45rem);
   font-weight: 700;
 }
 

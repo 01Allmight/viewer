@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './NotificationsModal.module.css';
+import styles from './FollowersModal.module.css';
 import { X } from 'lucide-react';
 import Image from 'next/image';
 

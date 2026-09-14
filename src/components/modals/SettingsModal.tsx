@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { X, Settings, Shield, Bell, Key, LogOut, ChevronRight, User } from 'lucide-react';
 import styles from './SettingsModal.module.css';
 import PrivacyModal from './PrivacyModal';
-import NotificationsModal from './NotificationsModal';
+import NotificationSettingsModal from './NotificationSettingsModal';
 import SecurityModal from './SecurityModal';
 import EditProfileModal from './EditProfileModal';
 import { MOCK_USERS } from '@/constants/mockData';
@@ -119,7 +119,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, onProfil
                 onClose={() => setIsPrivacyOpen(false)}
             />
 
-            <NotificationsModal
+            <NotificationSettingsModal
                 isOpen={isNotificationsOpen}
                 onClose={() => setIsNotificationsOpen(false)}
             />

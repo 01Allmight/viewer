@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Key, Eye, EyeOff, Check } from 'lucide-react';
 import styles from './ChangePasswordModal.module.css';
+import { useToast } from '@/contexts/ToastContext';
 
 interface ChangePasswordModalProps {
     isOpen: boolean;
@@ -15,6 +16,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ isOpen, onClo
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, setError] = useState('');
+    const { showToast } = useToast();
 
     if (!isOpen) return null;
 
@@ -47,7 +49,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ isOpen, onClo
 
         // In a real app, this would call an API
         console.log('Password change submitted');
-        alert('Password changed successfully! 🔒');
+        showToast('Password changed successfully! 🔒', 'success');
         onClose();
 
         // Reset form

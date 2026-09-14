@@ -53,3 +53,9 @@ backend/.venv/
 __pycache__/
 *.py[cod]
 *$py.class
+
+# build & lint reports
+*.log
+*-report*.json
+eslint-report.json
+

@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 import { motion } from 'framer-motion';
-import { ThemeSwitcher } from './ThemeSwitcher';
+import { ThemeSwitcher } from '@/components/common/ThemeSwitcher';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Sidebar = () => {

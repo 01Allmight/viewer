@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Search, X, TrendingUp, Compass, Users, Hash, Music, MapPin, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './search.module.css';
@@ -20,6 +20,7 @@ const SearchPage = () => {
     const [discoveryPosts, setDiscoveryPosts] = useState<any[]>([]);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
+    const searchInputRef = useRef<HTMLInputElement>(null);
 
     const handleTabChange = (tabId: string) => {
         setActiveTab(tabId);
@@ -29,6 +30,15 @@ const SearchPage = () => {
     const handleFocus = () => {
         setIsFocused(true);
         triggerHaptic(ImpactStyle.Light);
+    };
+
+    const showDiscovery = () => {
+        setSearchTerm('');
+        setActiveTab('Top');
+    };
+
+    const focusCreatorSearch = () => {
+        searchInputRef.current?.focus();
     };
 
     const loadMoreDiscovery = async () => {
@@ -127,10 +137,10 @@ const SearchPage = () => {
                     >
                         <h1 className={styles.pageTitle}>Explore</h1>
                         <div className={styles.userAction}>
-                            <button className={styles.actionCircle}>
+                            <button className={styles.actionCircle} aria-label="Explore trending content" onClick={showDiscovery}>
                                 <Compass size={20} />
                             </button>
-                            <button className={styles.actionCircle}>
+                            <button className={styles.actionCircle} aria-label="Find people to follow" onClick={focusCreatorSearch}>
                                 <Users size={20} />
                             </button>
                         </div>
@@ -139,6 +149,7 @@ const SearchPage = () => {
                     <div className={`${styles.searchBarWrapper} ${isFocused ? styles.focused : ''}`}>
                         <Search size={22} className={styles.searchIcon} />
                         <input
+                            ref={searchInputRef}
                             type="text"
                             placeholder="Discover creators, visions, and places..."
                             className={styles.searchInput}
@@ -190,6 +201,15 @@ const SearchPage = () => {
                     ) : !searchTerm ? (
                         /* Discovery View */
                         <div className={styles.discoveryWrapper}>
+                            <div className={styles.discoveryIntro}>
+                                <div>
+                                    <span className={styles.eyebrow}>Fresh from the community</span>
+                                    <h2>Find your next point of view</h2>
+                                </div>
+                                <button className={styles.discoveryAction} onClick={focusCreatorSearch}>
+                                    <Users size={16} /> Find creators
+                                </button>
+                            </div>
                             {/* Explore Grid */}
                             <div className={styles.exploreGrid}>
                                 {discoveryPosts.map((post, i) => (
@@ -314,6 +334,7 @@ const SearchPage = () => {
                                         </div>
                                         <h3>No results found</h3>
                                         <p>Try searching for a different username or tag.</p>
+                                        <button className={styles.resetSearchBtn} onClick={showDiscovery}>Back to explore</button>
                                     </motion.div>
                                 )}
                             </AnimatePresence>

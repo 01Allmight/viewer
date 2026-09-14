@@ -48,13 +48,23 @@ const StoryBar = () => {
         const fetchStories = async () => {
             try {
                 const res = await fetch('/api/stories');
-                const data = await res.json();
-                if (Array.isArray(data)) {
-                    setStories(data);
-                    setViewerStories(data);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        setStories(data);
+                        setViewerStories(data);
+                        return;
+                    }
                 }
             } catch (err) {
-                console.error('Failed to fetch stories', err);
+                console.error('Failed to fetch stories, falling back to mock data', err);
+            }
+            try {
+                const { MOCK_STORIES } = await import('@/constants/mockData');
+                setStories(MOCK_STORIES);
+                setViewerStories(MOCK_STORIES);
+            } catch (e) {
+                console.error('Failed to load mock stories', e);
             }
         };
         fetchStories();

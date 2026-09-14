@@ -81,7 +81,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         );
     }
 
-    if (!isLoggedIn) {
+    const isHomeRoute = pathname === '/';
+
+    if (!isLoggedIn && !isHomeRoute) {
         return <LandingPage onLogin={handleLogin} />;
     }
 

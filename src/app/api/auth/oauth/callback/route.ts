@@ -11,10 +11,29 @@ export async function GET(req: Request) {
     try {
         const { searchParams } = new URL(req.url);
         const code = searchParams.get('code');
+        const state = searchParams.get('state');
+        const cookieStore = await cookies();
+        const storedState = cookieStore.get('google_oauth_state')?.value;
+
+        if (state !== storedState) {
+            return NextResponse.redirect(new URL('/?error=InvalidOAuthState', req.url));
+        }
+
+        cookieStore.delete('google_oauth_state');
+
+        const clientId = process.env.GOOGLE_CLIENT_ID || process.env.OAUTH_CLIENT_ID || '';
+        const clientSecret = process.env.GOOGLE_CLIENT_SECRET || process.env.OAUTH_CLIENT_SECRET || '';
+        const redirectUri = process.env.NEXT_PUBLIC_APP_URL
+            ? `${process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, '')}/api/auth/oauth/callback`
+            : 'http://localhost:3000/api/auth/oauth/callback';
 
         // The provider redirect sends an authorization `code`
         if (!code) {
             return NextResponse.redirect(new URL('/?error=NoCodeProvided', req.url));
+        }
+
+        if (!clientId || !clientSecret) {
+            return NextResponse.redirect(new URL('/?error=MissingClientId', req.url));
         }
 
         // 1. Exchange the Authorization Code for an Access Token
@@ -25,10 +44,10 @@ export async function GET(req: Request) {
                 Accept: 'application/json',
             },
             body: new URLSearchParams({
-                client_id: process.env.OAUTH_CLIENT_ID || '',
-                client_secret: process.env.OAUTH_CLIENT_SECRET || '',
+                client_id: clientId,
+                client_secret: clientSecret,
                 code,
-                redirect_uri: 'http://localhost:3000/api/auth/oauth/callback', // Must match EXACTLY what you registered
+                redirect_uri: redirectUri,
                 grant_type: 'authorization_code',
             }),
         });
@@ -88,7 +107,6 @@ export async function GET(req: Request) {
         }
 
         // 4. Create Session Cookie (Login the User)
-        const cookieStore = await cookies();
         cookieStore.set('userId', user.id, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',

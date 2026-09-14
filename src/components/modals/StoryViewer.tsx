@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
 import { startConversation, sendMessage } from '@/app/actions';
+import { useToast } from '@/contexts/ToastContext';
 
 const QUICK_REACTIONS = ['🔥', '❤️', '😂', '😮', '👏'];
 
@@ -24,6 +25,7 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, initialStoryIndex, i
     const [isPaused, setIsPaused] = useState(false);
     const [replyText, setReplyText] = useState('');
     const [floatingReaction, setFloatingReaction] = useState<string | null>(null);
+    const { showToast } = useToast();
 
     // Local poll vote records (storyId -> votedOptionIndex)
     const [pollVotes, setPollVotes] = useState<Record<string, number>>({});
@@ -58,6 +60,29 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, initialStoryIndex, i
             setProgress(0);
         }
     }, [slideIndex, storyIndex, stories]);
+
+    // Keyboard navigation (Arrow keys, Space to pause, Esc to close)
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+            if (e.key === 'ArrowRight') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                setIsPaused(p => !p);
+            } else if (e.key === 'Escape') {
+                onClose();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isOpen, nextSlide, prevSlide, onClose]);
 
     // Timer & Auto Progression
     useEffect(() => {
@@ -123,6 +148,7 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, initialStoryIndex, i
         setTimeout(() => setFloatingReaction(null), 1200);
 
         if (currentStory.user?.username) {
+            showToast(`Reacted ${emoji} to story! ✨`, 'success');
             try {
                 const conv = await startConversation(currentStory.user.username);
                 await sendMessage(conv.id, `Reacted ${emoji} to your story! ✨`);
@@ -136,6 +162,7 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, initialStoryIndex, i
         if (!replyText.trim() || !currentStory.user?.username) return;
         const text = replyText.trim();
         setReplyText('');
+        showToast('Reply sent! 💬', 'success');
 
         try {
             const conv = await startConversation(currentStory.user.username);

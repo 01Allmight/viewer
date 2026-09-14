@@ -1,6 +1,7 @@
 .container {
     height: 100vh;
     width: 100vw;
+    max-width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,19 +11,18 @@
     top: 0;
     left: 0;
     z-index: 5000;
+    box-sizing: border-box;
 }
 
 .background {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     z-index: 1;
-    background: radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 100% 0%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 0% 100%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+    background:
+        radial-gradient(circle at 15% 15%, rgba(91, 108, 255, 0.18) 0%, transparent 30%),
+        radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.18) 0%, transparent 28%),
+        radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.12) 0%, transparent 26%),
+        radial-gradient(circle at 15% 85%, rgba(236, 72, 153, 0.12) 0%, transparent 28%);
 }
 
 .background::before {
@@ -30,9 +30,9 @@
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(to right, rgba(99, 102, 241, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
+        linear-gradient(to right, rgba(91, 108, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(91, 108, 255, 0.05) 1px, transparent 1px);
+    background-size: 42px 42px;
     z-index: 1;
     pointer-events: none;
 }
@@ -42,7 +42,7 @@
     position: absolute;
     inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Ffilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.04;
+    opacity: 0.035;
     pointer-events: none;
     z-index: 2;
 }
@@ -51,9 +51,9 @@
     position: absolute;
     width: 800px;
     height: 800px;
-    background: var(--premium-gradient);
+    background: linear-gradient(135deg, rgba(91, 108, 255, 0.5), rgba(168, 85, 247, 0.38), rgba(236, 72, 153, 0.28));
     filter: blur(120px);
-    opacity: 0.25;
+    opacity: 0.38;
     border-radius: 50%;
     will-change: transform;
 }
@@ -61,23 +61,24 @@
 .blob2 {
     bottom: -200px;
     right: -200px;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-    opacity: 0.2;
+    background: linear-gradient(135deg, rgba(59,130,246,0.6), rgba(168,85,247,0.45));
+    opacity: 0.24;
 }
 
 .blob3 {
     top: -300px;
     right: 10%;
-    background: linear-gradient(135deg, #ec4899, #8b5cf6);
-    opacity: 0.15;
+    background: linear-gradient(135deg, rgba(236,72,153,0.5), rgba(168,85,247,0.35));
+    opacity: 0.22;
 }
 
 .content {
     position: relative;
     z-index: 2;
-    width: 100%;
+    width: min(1100px, calc(100vw - 32px));
     max-width: 1100px;
     padding: 40px;
+    box-sizing: border-box;
 }
 
 .gridContainer {
@@ -124,45 +125,45 @@
 }
 
 .appName {
-    font-size: clamp(2.5rem, 6vw, 3.5rem);
-    font-weight: 950;
+    font-size: clamp(1.9rem, 3.8vw, 2.5rem);
+    font-weight: 800;
     line-height: 1;
     letter-spacing: -0.06em;
-    background: var(--premium-gradient);
+    background: linear-gradient(135deg, #0f172a 0%, #4f46e5 30%, #8b5cf6 65%, #ec4899 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.2));
+    filter: drop-shadow(0 0 18px rgba(79, 70, 229, 0.12));
     font-family: 'Syne', 'Inter', sans-serif;
 }
 
 .heroTitle {
-    font-size: clamp(2.5rem, 5.5vw, 3.8rem);
-    font-weight: 950;
+    font-size: clamp(1.45rem, 2.4vw, 2.1rem);
+    font-weight: 800;
     color: var(--foreground);
-    line-height: 1.1;
-    letter-spacing: -0.04em;
+    line-height: 1.08;
+    letter-spacing: -0.05em;
     font-family: 'Syne', 'Inter', sans-serif;
     margin-bottom: -5px;
     -webkit-font-smoothing: antialiased;
-    text-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+    text-shadow: 0 12px 40px rgba(79, 70, 229, 0.08);
     font-optical-sizing: auto;
 }
 
 .gradientText {
-    background: var(--premium-gradient);
+    background: linear-gradient(135deg, #4f46e5 0%, #8b5cf6 45%, #ec4899 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .heroSubtitle {
-    font-size: 1.15rem;
+    font-size: 0.92rem;
     color: var(--foreground-muted);
-    line-height: 1.8;
+    line-height: 1.6;
     margin-bottom: 0px;
-    font-weight: 600;
-    max-width: 520px;
+    font-weight: 500;
+    max-width: 500px;
     letter-spacing: 0.01em;
     -webkit-font-smoothing: antialiased;
 }
@@ -181,38 +182,40 @@
     color: var(--foreground);
     font-weight: 700;
     font-size: 14px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.7);
     padding: 16px 20px;
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    letter-spacing: 0.2px;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 18px;
+    border: 1px solid rgba(91, 108, 255, 0.1);
+    letter-spacing: 0.18px;
+    transition: all 0.35s ease;
     backdrop-filter: blur(20px);
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.04);
 }
 
 .featureItem:hover {
     transform: translateY(-4px) scale(1.02);
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.92);
+    border-color: rgba(91, 108, 255, 0.18);
+    box-shadow: 0 16px 30px rgba(79, 70, 229, 0.12);
 }
 
 .featureIcon {
-    color: var(--primary);
+    color: #5b6cff;
 }
 
 .loginCard {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.68);
     backdrop-filter: blur(40px) saturate(200%);
     -webkit-backdrop-filter: blur(40px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(148, 163, 184, 0.2);
     padding: 48px;
-    border-radius: 36px;
+    border-radius: 34px;
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 28px;
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    box-sizing: border-box;
 }
 
 :global(.dark) .loginCard {
@@ -327,18 +330,19 @@
     width: 100%;
     padding: 15px;
     border-radius: 14px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(148, 163, 184, 0.2);
     color: var(--foreground);
-    font-weight: 600;
-    font-size: 15px;
+    font-weight: 700;
+    font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
 }
 
 .socialBtn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(91, 108, 255, 0.25);
     transform: translateY(-2px);
 }
 
@@ -348,25 +352,37 @@
 }
 
 .loginBtn {
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%);
     background-size: 200% auto;
-    color: white;
+    color: #ffffff;
     font-weight: 800;
-    padding: 17px;
+    padding: 17px 18px;
     border-radius: 16px;
-    font-size: 17px;
+    font-size: 0.96rem;
     font-family: 'Syne', 'Inter', sans-serif;
-    letter-spacing: 0.5px;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.35s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    border: none;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.25);
+    box-shadow: 0 14px 30px rgba(79, 70, 229, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.loginBtn:hover:not(:disabled) {
+    background-position: right center;
+    transform: translateY(-2px);
+    box-shadow: 0 18px 34px rgba(79, 70, 229, 0.28);
+}
+
+.loginBtn:disabled {
+    opacity: 0.78;
+    cursor: not-allowed;
 }
 
 .successCard {

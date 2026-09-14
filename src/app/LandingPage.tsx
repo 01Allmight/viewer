@@ -338,23 +338,6 @@ const LandingContent: React.FC<LandingPageProps & {
                                                 </button>
                                             </form>
 
-                                            <button
-                                                type="button"
-                                                className={styles.loginBtn}
-                                                style={{
-                                                    marginTop: '12px',
-                                                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                                                    boxShadow: '0 4px 16px rgba(16, 185, 129, 0.3)',
-                                                    height: '48px',
-                                                    fontSize: '14.5px'
-                                                }}
-                                                onClick={handleDemoLogin}
-                                                disabled={isLoading}
-                                            >
-                                                <Sparkles size={18} />
-                                                One-Click Demo Access (antigravity_dev)
-                                            </button>
-
                                             <div className={styles.divider}>OR</div>
 
                                             {mode !== 'forgot_password' && (

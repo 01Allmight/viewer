@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './monetization.module.css';
+import { useToast } from '@/contexts/ToastContext';
 
 const MonetizationPage = () => {
     // State for Modals & Tabs
@@ -32,6 +33,7 @@ const MonetizationPage = () => {
     const [showAddPayment, setShowAddPayment] = useState(false);
     const [showWithdraw, setShowWithdraw] = useState(false);
     const [withdrawAmount, setWithdrawAmount] = useState('');
+    const { showToast } = useToast();
 
     // Influencer / Referral Data
     const [referralStats, setReferralStats] = useState({
@@ -147,15 +149,15 @@ const MonetizationPage = () => {
             setBalance(prev => prev - amount);
             setShowWithdraw(false);
             setWithdrawAmount('');
-            alert(`Withdrawal of $${amount} initiated successfully!`);
+            showToast(`Withdrawal of $${amount} initiated successfully! 💸`, 'success');
         } else {
-            alert('Invalid amount or insufficient funds');
+            showToast('Invalid amount or insufficient funds', 'error');
         }
     };
 
     const handleCopyLink = () => {
         navigator.clipboard.writeText(referralStats.link);
-        alert('Referral link copied to clipboard!');
+        showToast('Referral link copied to clipboard! 📋', 'success');
     };
 
     const shareToTwitter = () => {

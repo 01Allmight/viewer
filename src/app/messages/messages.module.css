@@ -24,7 +24,7 @@
 
 /* ===== CONVERSATION SIDEBAR ===== */
 .conversationsList {
-    width: 380px;
+    width: 320px;
     border-right: 1px solid rgba(0, 0, 0, 0.06);
     display: flex;
     flex-direction: column;
@@ -42,14 +42,14 @@
 }
 
 .conversationsHeader {
-    padding: 24px 20px 14px;
+    padding: 20px 18px 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
 .headerTitle {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 800;
     letter-spacing: -0.04em;
     color: #0f172a;
@@ -85,7 +85,7 @@
 
 /* Search Bar */
 .searchContainer {
-    padding: 0 16px 14px;
+    padding: 0 14px 12px;
     position: relative;
 }
 
@@ -103,7 +103,7 @@
     padding: 10px 16px 10px 40px;
     background: rgba(0, 0, 0, 0.04);
     border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 16px;
+    border-radius: 12px;
     color: #0f172a;
     font-size: 13px;
     font-weight: 500;
@@ -198,7 +198,7 @@
 .conversationsScroll {
     flex: 1;
     overflow-y: auto;
-    padding: 4px 10px 20px;
+    padding: 4px 8px 16px;
 }
 
 .conversationsScroll::-webkit-scrollbar {
@@ -213,7 +213,7 @@
 .conversationItem {
     display: flex;
     gap: 12px;
-    padding: 10px 12px;
+    padding: 9px 10px;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 16px;
@@ -385,7 +385,7 @@
 
 /* Chat Header */
 .chatHeader {
-    padding: 12px 24px;
+    padding: 10px 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     display: flex;
     align-items: center;
@@ -471,10 +471,10 @@
 .messagesArea {
     flex: 1;
     overflow-y: auto;
-    padding: 24px 28px;
+    padding: 18px 24px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
     scrollbar-width: thin;
     scrollbar-color: rgba(99, 102, 241, 0.2) transparent;
 }
@@ -492,7 +492,7 @@
 .messageWrapper {
     display: flex;
     gap: 8px;
-    max-width: 72%;
+    max-width: 68%;
     align-items: flex-end;
     position: relative;
     transition: transform 0.2s ease;
@@ -522,7 +522,7 @@
 }
 
 .messageBubble {
-    padding: 11px 16px;
+    padding: 10px 14px;
     border-radius: 18px;
     font-family: 'Outfit', sans-serif;
     position: relative;
@@ -575,7 +575,7 @@
 }
 
 .messageText {
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 500;
     line-height: 1.45;
     margin: 0 0 3px 0;
@@ -1415,10 +1415,10 @@
 }
 
 .emptyIconWrapper {
-    width: 90px;
-    height: 90px;
+    width: 76px;
+    height: 76px;
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
-    border-radius: 28px;
+    border-radius: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1427,7 +1427,7 @@
 }
 
 .emptyTitle {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 800;
     letter-spacing: -0.04em;
     margin-bottom: 8px;

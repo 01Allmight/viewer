@@ -20,6 +20,7 @@ import { pusherClient } from '@/lib/pusher';
 import { triggerHaptic, triggerHapticNotification } from '@/lib/haptics';
 import { ImpactStyle, NotificationType } from '@capacitor/haptics';
 import RichText from '../common/RichText';
+import { useToast } from '@/contexts/ToastContext';
 
 interface PostProps {
     id: string;
@@ -51,6 +52,7 @@ const Post: React.FC<PostProps> = ({ id, type = 'post', user, image, video, medi
     const [localLikes, setLocalLikes] = useState(likes);
     const [localViews, setLocalViews] = useState(0); // View count starts at 0 for simplicity if not provided
     const [isPending, startTransition] = useTransition();
+    const { showToast } = useToast();
     const [showHeart, setShowHeart] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
     const [isFollowingAuthor, setIsFollowingAuthor] = useState(false);
@@ -181,6 +183,7 @@ const Post: React.FC<PostProps> = ({ id, type = 'post', user, image, video, medi
         const newIsSaved = !isSaved;
         setIsSaved(newIsSaved);
         triggerHapticNotification(NotificationType.Success);
+        showToast(newIsSaved ? 'Saved to bookmarks 🔖' : 'Removed from bookmarks', 'info');
 
         startTransition(async () => {
             try {
@@ -199,6 +202,7 @@ const Post: React.FC<PostProps> = ({ id, type = 'post', user, image, video, medi
     const handleFollow = () => {
         const next = !isFollowingAuthor;
         setIsFollowingAuthor(next);
+        showToast(next ? `Following @${user.username} ✨` : `Unfollowed @${user.username}`, 'info');
 
         startTransition(async () => {
             try {
@@ -219,12 +223,12 @@ const Post: React.FC<PostProps> = ({ id, type = 'post', user, image, video, medi
                 url: window.location.href,
             }).catch(() => {
                 navigator.clipboard.writeText(window.location.href);
-                alert('Link copied to clipboard!');
+                showToast('Link copied to clipboard! 📋', 'success');
             });
         } else {
             navigator.clipboard.writeText(window.location.href);
             triggerHaptic(ImpactStyle.Light);
-            alert('Link copied to clipboard!');
+            showToast('Link copied to clipboard! 📋', 'success');
         }
     };
 

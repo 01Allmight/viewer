@@ -8,6 +8,7 @@ const syne = Syne({ subsets: ["latin"], display: "swap", variable: "--font-syne"
 const outfit = Outfit({ subsets: ["latin"], display: "swap", variable: "--font-outfit" });
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "../contexts/AuthContext";
+import { ToastProvider } from "@/contexts/ToastContext";
 import MainLayout from "@/components/layout/MainLayout";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import AnalyticsTags from "@/components/marketing/AnalyticsTags";
@@ -72,9 +73,11 @@ export default function RootLayout({
       <body className={`${inter.variable} ${syne.variable} ${outfit.variable}`} suppressHydrationWarning>
         <AuthProvider>
           <ThemeProvider>
-            <MainLayout>
-              {children}
-            </MainLayout>
+            <ToastProvider>
+              <MainLayout>
+                {children}
+              </MainLayout>
+            </ToastProvider>
             <SpeedInsights />
           </ThemeProvider>
         </AuthProvider>

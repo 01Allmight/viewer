@@ -11,6 +11,7 @@ import { compressImage, compressVideo } from '@/lib/compression';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { Camera as CameraIcon } from 'lucide-react';
+import { useToast } from '@/contexts/ToastContext';
 
 const FILTERS = [
     { name: 'Original', value: 'none' },
@@ -34,6 +35,7 @@ const CreatePostPage = () => {
     const [isEnhancing, setIsEnhancing] = useState(false);
     const [isEnhanced, setIsEnhanced] = useState(false);
     const [currentUser, setCurrentUser] = useState<any>(null);
+    const { showToast } = useToast();
     const router = useRouter();
 
     useEffect(() => {
@@ -60,8 +62,23 @@ const CreatePostPage = () => {
     };
 
     const processFiles = (files: File[]) => {
-        files.forEach(file => {
-            if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) return;
+        const availableSlots = 10 - mediaItems.length;
+        if (availableSlots <= 0) {
+            showToast('You can add up to 10 media items per post.', 'error');
+            return;
+        }
+
+        const validFiles = files.filter(file => {
+            const isMedia = file.type.startsWith('image/') || file.type.startsWith('video/');
+            const isWithinSizeLimit = file.size <= 50 * 1024 * 1024;
+            return isMedia && isWithinSizeLimit;
+        }).slice(0, availableSlots);
+
+        if (validFiles.length < files.length) {
+            showToast('Only images and videos up to 50 MB can be added.', 'error');
+        }
+
+        validFiles.forEach(file => {
             const type: 'image' | 'video' = file.type.startsWith('video/') ? 'video' : 'image';
             const objectUrl = URL.createObjectURL(file);
             setMediaItems(prev => [...prev, { url: objectUrl, file, type }]);
@@ -162,15 +179,16 @@ const CreatePostPage = () => {
             startTransition(async () => {
                 try {
                     await createPost(formData);
+                    showToast('Post created successfully! 🎉', 'success');
                     router.push('/');
                 } catch (error) {
                     console.error('Failed to share post:', error);
-                    alert('Failed to share post: ' + (error as Error).message);
+                    showToast('Failed to share post: ' + (error as Error).message, 'error');
                 }
             });
         } catch (error) {
             console.error('Compression or Upload failed:', error);
-            alert('Upload failed: ' + (error as Error).message);
+            showToast('Upload failed: ' + (error as Error).message, 'error');
         } finally {
             setIsCompressing(false);
         }
@@ -298,6 +316,11 @@ const CreatePostPage = () => {
                                     </div>
                                 )}
 
+                                <div className={styles.mediaSummary}>
+                                    <span>{mediaItems.length} {mediaItems.length === 1 ? 'item' : 'items'} ready to publish</span>
+                                    <span>Up to 10</span>
+                                </div>
+
                                 <div className={styles.captionArea}>
                                     <textarea
                                         className={styles.captionInput}
@@ -389,7 +412,8 @@ const CreatePostPage = () => {
                                 )}
                             </div>
 
-                            <p style={{ color: '#9ca3af', fontSize: '14px', fontWeight: 600 }}>Drag and drop media here</p>
+                            <p className={styles.uploadHint}>Drag and drop media here</p>
+                            <p className={styles.uploadMeta}>Images and videos up to 50 MB · Add up to 10 items</p>
                         </motion.div>
                     )}
                 </div>
