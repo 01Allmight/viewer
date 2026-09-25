@@ -27,6 +27,10 @@
   --header-height: 64px;
   --max-width: 960px;
 
+  --font-sans: var(--font-manrope), var(--font-inter), "Segoe UI", sans-serif;
+  --font-display: var(--font-syne), var(--font-manrope), var(--font-inter), sans-serif;
+  --font-accent: var(--font-outfit), var(--font-syne), var(--font-manrope), sans-serif;
+
   --ig-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 28%, #ec4899 58%, #f59e0b 100%);
   --premium-gradient: linear-gradient(135deg, #eef4ff 0%, #ffffff 42%, #f7f3ff 100%);
   --gold-gradient: linear-gradient(135deg, #facc15 0%, #f59e0b 52%, #facc15 100%);
@@ -173,13 +177,13 @@ body {
     radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.06) 0%, transparent 28%);
   background-attachment: fixed;
   color: var(--foreground);
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
-  font-weight: 400;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  letter-spacing: -0.02em;
 }
 
 ::selection {
@@ -190,9 +194,9 @@ body {
 h1,
 h2,
 h3 {
-  font-family: var(--font-syne), var(--font-inter), sans-serif;
-  letter-spacing: -0.05em;
-  line-height: 1.06;
+  font-family: var(--font-display);
+  letter-spacing: -0.06em;
+  line-height: 1.04;
   background: var(--ig-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -201,32 +205,78 @@ h3 {
 }
 
 h1 {
-  font-size: clamp(1.7rem, 5vw, 2.4rem);
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
   font-weight: 800;
 }
 
 h2 {
-  font-size: clamp(1.35rem, 3.8vw, 1.8rem);
+  font-size: clamp(1.4rem, 3.8vw, 2rem);
   font-weight: 800;
 }
 
 h3 {
-  font-size: clamp(1.15rem, 3vw, 1.45rem);
+  font-size: clamp(1.18rem, 3vw, 1.5rem);
   font-weight: 700;
 }
 
 h4, h5, h6 {
-  font-family: var(--font-syne), var(--font-inter), sans-serif;
-  font-size: clamp(1rem, 2vw, 1.1rem);
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2vw, 1.12rem);
   font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+p,
+label,
+span,
+small,
+strong,
+li,
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
 }
 
 .display-text {
-  font-family: var(--font-syne), var(--font-inter), sans-serif;
-  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6vw, 4rem);
   font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 0.96;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  letter-spacing: -0.06em;
+  line-height: 1.02;
+  font-weight: 800;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
   letter-spacing: -0.04em;
-  line-height: 1.0;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.eyebrow {
+  font-family: var(--font-accent);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--foreground-muted);
+}
+
+.muted-text,
+.subtitle,
+.meta-text {
+  color: var(--foreground-muted);
+  font-family: var(--font-sans);
 }
 
 a {

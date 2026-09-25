@@ -1,11 +1,12 @@
 import React, { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
-import { Inter, Syne, Outfit } from "next/font/google";
+import { Inter, Syne, Outfit, Manrope } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
 const syne = Syne({ subsets: ["latin"], display: "swap", variable: "--font-syne" });
 const outfit = Outfit({ subsets: ["latin"], display: "swap", variable: "--font-outfit" });
+const manrope = Manrope({ subsets: ["latin"], display: "swap", variable: "--font-manrope" });
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "../contexts/AuthContext";
 import { ToastProvider } from "@/contexts/ToastContext";
@@ -70,7 +71,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} ${syne.variable} ${outfit.variable}`} suppressHydrationWarning>
+      <body className={`${inter.variable} ${syne.variable} ${outfit.variable} ${manrope.variable}`} suppressHydrationWarning>
         <AuthProvider>
           <ThemeProvider>
             <ToastProvider>

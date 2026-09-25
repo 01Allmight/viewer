@@ -14,11 +14,14 @@ export default prisma;
 
 if (process.env.NODE_ENV !== 'production') globalThis.prisma = prisma;
 
-// Improve the database link by verifying connection and logging success
-prisma.$connect()
-    .then(() => {
-        console.log('✅ Database linked with success!');
-    })
-    .catch((error) => {
-        console.error('❌ Failed to link database:', error);
-    });
+if (process.env.DATABASE_URL) {
+    prisma.$connect()
+        .then(() => {
+            console.log('✅ Database linked with success!');
+        })
+        .catch((error) => {
+            console.warn('Database unavailable, continuing with mock-data fallbacks:', error instanceof Error ? error.message : String(error));
+        });
+} else {
+    console.warn('DATABASE_URL not configured; continuing with mock-data fallbacks.');
+}

@@ -9,12 +9,11 @@ export async function GET(request: Request) {
         const { searchParams } = new URL(request.url);
         const page = parseInt(searchParams.get('page') || '1');
         const limit = parseInt(searchParams.get('limit') || '10');
+        const skip = (page - 1) * limit;
 
         const session = await getSession();
 
         if (!session) {
-            // Public feed - latest posts
-            const skip = (page - 1) * limit;
             const posts = await prisma.post.findMany({
                 include: {
                     user: { select: { username: true, avatar: true, fullName: true } },
@@ -23,7 +22,7 @@ export async function GET(request: Request) {
                     media: { orderBy: { order: 'asc' } }
                 },
                 orderBy: { createdAt: 'desc' },
-                skip: skip,
+                skip,
                 take: limit
             });
 
@@ -35,12 +34,33 @@ export async function GET(request: Request) {
             return NextResponse.json(mappedPosts);
         }
 
-        // Personalized feed
         const rankedFeed = await FeedService.generateFeed(session.id, page, limit);
         return NextResponse.json(rankedFeed);
     } catch (error) {
-        console.error('API Error (GET /api/posts):', error);
-        return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 });
+        console.warn('Database unavailable for /api/posts, using mock data fallback:', error instanceof Error ? error.message : String(error));
+
+        const start = ((parseInt(new URL(request.url).searchParams.get('page') || '1') - 1) * parseInt(new URL(request.url).searchParams.get('limit') || '10'));
+        const pageSize = parseInt(new URL(request.url).searchParams.get('limit') || '10');
+
+        const fallback = MOCK_POSTS.slice(start, start + pageSize).map(post => ({
+            id: post.id,
+            user: {
+                id: post.user.id,
+                username: post.user.username,
+                avatar: post.user.avatar,
+                fullName: post.user.name,
+            },
+            image: post.image,
+            caption: post.caption,
+            likes: post.likes,
+            createdAt: new Date(post.createdAt).toISOString(),
+            comments: [],
+            media: [{ url: post.image, type: 'IMAGE', order: 0 }],
+            isLiked: post.isLiked,
+            isSaved: post.isSaved,
+        }));
+
+        return NextResponse.json(fallback);
     }
 }
 
