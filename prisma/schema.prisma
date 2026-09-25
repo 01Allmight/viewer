@@ -15,6 +15,7 @@ model User {
   fullName      String?
   bio           String?
   avatar        String?
+  coverPhoto    String?
   website       String?
   category      String?
   isVerified    Boolean   @default(false)

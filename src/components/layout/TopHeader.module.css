@@ -92,6 +92,76 @@
     box-shadow: 0 4px 14px var(--primary-glow);
 }
 
+.themeToggleBtn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px 7px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--foreground);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    transition: all var(--transition-smooth);
+    overflow: hidden;
+}
+
+.themeToggleBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(91, 108, 255, 0.18);
+}
+
+.themeToggleDark {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.82));
+    color: #f8fafc;
+    border-color: rgba(148, 163, 184, 0.2);
+}
+
+.themeToggleLight {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(239, 246, 255, 0.76));
+    color: var(--foreground);
+    border-color: rgba(99, 102, 241, 0.18);
+}
+
+.themeToggleGlow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.4), transparent 35%);
+    pointer-events: none;
+}
+
+.themeToggleIcon,
+.themeSparkle {
+    position: relative;
+    z-index: 1;
+}
+
+.themeToggleIcon {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.themeSparkle {
+    opacity: 0.8;
+}
+
+.themeToggleLabel {
+    position: relative;
+    z-index: 1;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
 .badge {
     position: absolute;
     top: -3px;

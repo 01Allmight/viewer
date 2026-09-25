@@ -213,23 +213,22 @@ const SearchPage = () => {
                             {/* Explore Grid */}
                             <div className={styles.exploreGrid}>
                                 {discoveryPosts.map((post, i) => (
-                                    <motion.div 
-                                        key={post.id}
-                                        ref={i === discoveryPosts.length - 1 ? lastElementRef : null}
-                                        className={styles.gridItem}
-                                        initial={{ opacity: 0, scale: 0.9 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        transition={{ delay: (i % 9) * 0.05 }}
-                                    >
-                                        <Image
-                                            src={post.media[0]?.url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe'}
-                                            alt="Discovery"
-                                            layout="fill"
-                                            objectFit="cover"
-                                            className={styles.gridImage}
-                                        />
-                                        {post.media.length > 1 && <div className={styles.carouselBadge}>+</div>}
-                                    </motion.div>
+                                    <Link href="/" key={post.id} className={styles.gridItem}>
+                                        <motion.div
+                                            ref={i === discoveryPosts.length - 1 ? lastElementRef : null}
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            transition={{ delay: (i % 9) * 0.05 }}
+                                        >
+                                            <Image
+                                                src={post.media[0]?.url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe'}
+                                                alt="Open vision in feed"
+                                                fill
+                                                className={styles.gridImage}
+                                            />
+                                            {post.media.length > 1 && <div className={styles.carouselBadge}>+</div>}
+                                        </motion.div>
+                                    </Link>
                                 ))}
                             </div>
 
@@ -253,7 +252,7 @@ const SearchPage = () => {
                                             animate={{ opacity: 1, scale: 1 }}
                                             transition={{ delay: i * 0.05 }}
                                         >
-                                            <Link href={`/profile/${user.username}`} prefetch={false} className={styles.avatarWrapper}>
+                                                <Link href="/profile" prefetch={false} className={styles.avatarWrapper}>
                                                 <Image
                                                     src={user.avatar || `https://ui-avatars.com/api/?name=${user.username}&background=random`}
                                                     alt={user.username}
@@ -263,7 +262,7 @@ const SearchPage = () => {
                                                 />
                                             </Link>
                                             <div className={styles.resultInfo}>
-                                                <Link href={`/profile/${user.username}`} prefetch={false} className={styles.nameRow}>
+                                                <Link href="/profile" prefetch={false} className={styles.nameRow}>
                                                     <span className={styles.resultUsername}>{user.username}</span>
                                                     {user.isVerified && <div className={styles.verifiedBadge}>Verified</div>}
                                                 </Link>
@@ -271,7 +270,7 @@ const SearchPage = () => {
                                                     <span className={styles.resultFullName}>{user.fullName || 'Digital Creator'}</span>
                                                 </div>
                                             </div>
-                                            <Link href={`/profile/${user.username}`} prefetch={false}>
+                                            <Link href="/profile" prefetch={false}>
                                                 <button className={styles.followBtn}>View</button>
                                             </Link>
                                         </motion.div>
@@ -298,7 +297,7 @@ const SearchPage = () => {
                                             animate={{ opacity: 1, scale: 1 }}
                                             transition={{ delay: i * 0.03 }}
                                         >
-                                            <Link href={`/${user.username}`} prefetch={false} className={styles.avatarWrapper}>
+                                            <Link href="/profile" prefetch={false} className={styles.avatarWrapper}>
                                                 <Image
                                                     src={user.avatar || `https://ui-avatars.com/api/?name=${user.username}&background=random`}
                                                     alt={user.username}
@@ -309,7 +308,7 @@ const SearchPage = () => {
                                                 />
                                             </Link>
                                             <div className={styles.resultInfo}>
-                                                <Link href={`/${user.username}`} prefetch={false} className={styles.nameRow}>
+                                                <Link href="/profile" prefetch={false} className={styles.nameRow}>
                                                     <span className={styles.resultUsername}>{user.username}</span>
                                                     {user.isVerified && <div className={styles.verifiedBadge}>Verified</div>}
                                                 </Link>

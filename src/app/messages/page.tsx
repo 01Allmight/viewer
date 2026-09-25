@@ -292,7 +292,7 @@ const MessagesPage = () => {
         }
     };
 
-    // Image Upload
+    // Image and video upload
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file || !selectedConversation) return;
@@ -301,7 +301,8 @@ const MessagesPage = () => {
             const reader = new FileReader();
             reader.onloadend = async () => {
                 const base64String = reader.result as string;
-                await sendMessage(selectedConversation, `[IMAGE]:${base64String}`);
+                const mediaType = file.type.startsWith('video/') ? 'VIDEO' : 'IMAGE';
+                await sendMessage(selectedConversation, `[${mediaType}]:${base64String}`);
             };
             reader.readAsDataURL(file);
         } catch (err) {
@@ -346,11 +347,12 @@ const MessagesPage = () => {
         if (!selectedConversation) return;
 
         const file = e.dataTransfer.files?.[0];
-        if (file && file.type.startsWith('image/')) {
+            if (file && (file.type.startsWith('image/') || file.type.startsWith('video/'))) {
             const reader = new FileReader();
             reader.onloadend = async () => {
                 const base64String = reader.result as string;
-                await sendMessage(selectedConversation, `[IMAGE]:${base64String}`);
+                    const mediaType = file.type.startsWith('video/') ? 'VIDEO' : 'IMAGE';
+                    await sendMessage(selectedConversation, `[${mediaType}]:${base64String}`);
             };
             reader.readAsDataURL(file);
         }
@@ -648,11 +650,13 @@ const MessagesPage = () => {
         }
 
         const isImage = mainContent.startsWith('[IMAGE]:');
+        const isVideo = mainContent.startsWith('[VIDEO]:');
         const isAudio = mainContent.startsWith('[AUDIO]:');
         const imageUrl = isImage ? mainContent.replace('[IMAGE]:', '') : null;
+        const videoUrl = isVideo ? mainContent.replace('[VIDEO]:', '') : null;
         const audioUrl = isAudio ? mainContent.replace('[AUDIO]:', '') : null;
 
-        return { replyHeader, isImage, isAudio, imageUrl, audioUrl, text: mainContent };
+        return { replyHeader, isImage, isVideo, isAudio, imageUrl, videoUrl, audioUrl, text: mainContent };
     };
 
     return (
@@ -714,6 +718,8 @@ const MessagesPage = () => {
                             const displayLast = lastMsgParsed
                                 ? lastMsgParsed.isImage
                                     ? '📷 Photo'
+                                    : lastMsgParsed.isVideo
+                                    ? '🎬 Video'
                                     : lastMsgParsed.isAudio
                                     ? '🎙️ Voice note'
                                     : lastMsgParsed.text
@@ -840,7 +846,7 @@ const MessagesPage = () => {
                                     <AnimatePresence mode="popLayout">
                                         {messages.map((message) => {
                                             const isMe = message.senderId === currentUser?.id;
-                                            const { replyHeader, isImage, isAudio, imageUrl, audioUrl, text } =
+                                            const { replyHeader, isImage, isVideo, isAudio, imageUrl, videoUrl, audioUrl, text } =
                                                 parseContent(message.content);
                                             const prog = audioProgress[message.id] || { current: 0, duration: 0 };
                                             const playPct = prog.duration > 0 ? (prog.current / prog.duration) * 100 : 0;
@@ -902,7 +908,7 @@ const MessagesPage = () => {
                                                                         username: isMe
                                                                             ? 'You'
                                                                             : otherParticipant?.username || 'User',
-                                                                        text: isImage ? '📷 Photo' : isAudio ? '🎙️ Voice note' : text
+                                                                        text: isImage ? '📷 Photo' : isVideo ? '🎬 Video' : isAudio ? '🎙️ Voice note' : text
                                                                     })
                                                                 }
                                                                 title="Reply"
@@ -990,6 +996,19 @@ const MessagesPage = () => {
                                                                 </div>
                                                             )}
 
+                                                            {isVideo && videoUrl && (
+                                                                <div className={styles.messageVideoWrapper}>
+                                                                    <video
+                                                                        src={videoUrl}
+                                                                        className={styles.messageVideo}
+                                                                        controls
+                                                                        playsInline
+                                                                        preload="metadata"
+                                                                    />
+                                                                    <span className={styles.mediaTypeBadge}>VIDEO</span>
+                                                                </div>
+                                                            )}
+
                                                             {/* Audio Voice Note Bubble */}
                                                             {isAudio && audioUrl && (
                                                                 <div className={styles.audioPlayerBubble}>
@@ -1044,7 +1063,7 @@ const MessagesPage = () => {
                                                             )}
 
                                                             {/* Plain Text Content */}
-                                                            {!isImage && !isAudio && (
+                                                            {!isImage && !isVideo && !isAudio && (
                                                                 <p className={styles.messageText}>{text}</p>
                                                             )}
 
@@ -1154,7 +1173,7 @@ const MessagesPage = () => {
                                     <div className={styles.messageInput}>
                                         <input
                                             type="file"
-                                            accept="image/*"
+                                            accept="image/*,video/*"
                                             id="chat-image-upload"
                                             style={{ display: 'none' }}
                                             onChange={handleImageUpload}

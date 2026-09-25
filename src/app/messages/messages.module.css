@@ -799,6 +799,17 @@
     max-width: 280px;
     max-height: 280px;
     background: #000;
+    border: 1px solid rgba(99, 102, 241, 0.22);
+}
+
+.messageVideoWrapper {
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 4px;
+    position: relative;
+    max-width: 320px;
+    background: #07121f;
+    border: 1px solid rgba(14, 165, 233, 0.28);
 }
 
 .messageImage {
@@ -811,6 +822,27 @@
 
 .messageImageWrapper:hover .messageImage {
     transform: scale(1.03);
+}
+
+.messageVideo {
+    display: block;
+    width: 100%;
+    max-height: 360px;
+    object-fit: cover;
+    background: #07121f;
+}
+
+.mediaTypeBadge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 7px;
+    border-radius: 6px;
+    background: rgba(7, 18, 31, 0.72);
+    color: #bae6fd;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
 }
 
 /* Voice Note Player in message bubble */

@@ -18,10 +18,36 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ user, setUser }) => {
         bio: user.bio || '',
         website: user.website || '',
         isPrivate: user.isPrivate || false,
+        coverPhoto: user.coverPhoto || '',
     });
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState('');
     const isSuccess = message.includes('successfully');
+
+    const handleCoverPhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        try {
+            setIsLoading(true);
+            const formData = new FormData();
+            formData.append('file', file);
+            const uploadResponse = await fetch('/api/uploads', { method: 'POST', body: formData });
+            const uploadData = await uploadResponse.json();
+
+            if (!uploadResponse.ok || !uploadData.publicUrl) {
+                throw new Error('Cover photo upload failed.');
+            }
+
+            setFormData(prev => ({ ...prev, coverPhoto: uploadData.publicUrl }));
+            setMessage('Cover photo uploaded. Save changes to publish it.');
+        } catch (error) {
+            setMessage((error as Error).message);
+        } finally {
+            setIsLoading(false);
+            e.target.value = '';
+        }
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
@@ -43,6 +69,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ user, setUser }) => {
             bio: formData.bio,
             website: formData.website,
             isPrivate: formData.isPrivate,
+            coverPhoto: formData.coverPhoto,
         });
 
         if (res.success && res.user) {
@@ -53,6 +80,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ user, setUser }) => {
                 bio: res.user.bio,
                 website: res.user.website,
                 isPrivate: res.user.isPrivate,
+                coverPhoto: res.user.coverPhoto,
             } as any);
         } else {
             setMessage(res.error || 'Failed to update profile.');
@@ -86,6 +114,27 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ user, setUser }) => {
                         <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700 }}>Profile information</h3>
                         <p style={{ margin: '3px 0 0', color: 'var(--foreground-muted)', fontSize: '0.82rem' }}>This is what people see when they visit your profile.</p>
                     </div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <label style={{ fontSize: '0.9rem', color: 'var(--foreground-muted)' }}>Cover photo</label>
+                    <div
+                        style={{
+                            height: '120px',
+                            borderRadius: '12px',
+                            background: formData.coverPhoto ? `url(${formData.coverPhoto}) center / cover` : 'linear-gradient(120deg, #0f766e, #0ea5e9, #f59e0b)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#fff',
+                            fontWeight: 700,
+                            cursor: 'pointer'
+                        }}
+                        onClick={() => document.getElementById('settings-cover-photo')?.click()}
+                    >
+                        {formData.coverPhoto ? 'Change cover photo' : 'Add cover photo'}
+                    </div>
+                    <input id="settings-cover-photo" type="file" accept="image/*" hidden onChange={handleCoverPhotoChange} />
                 </div>
                 
                 {message && (

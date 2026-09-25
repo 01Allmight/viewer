@@ -386,7 +386,7 @@ const Post: React.FC<PostProps> = ({ id, type = 'post', user, image, video, medi
                         whileTap={{ scale: 0.75 }}
                         className={`${styles.actionButton} ${isSaved ? styles.saved : ''}`}
                         onClick={handleSave}
-                        onContextMenu={(e) => { e.preventDefault(); setShowCollections(!showCollections); }}
+                        onContextMenu={(e: { preventDefault: () => void; }) => { e.preventDefault(); setShowCollections(!showCollections); }}
                     >
                         <Bookmark size={24} fill={isSaved ? 'currentColor' : 'none'} />
                     </motion.button>

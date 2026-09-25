@@ -66,10 +66,10 @@ export async function GET() {
         const user = await getSession();
 
         if (!user) {
-            return NextResponse.json({ authenticated: false }, { status: 401 });
+            return NextResponse.json({ authenticated: false }, { status: 200 });
         }
 
-        return NextResponse.json({ authenticated: true, user });
+        return NextResponse.json({ authenticated: true, user }, { status: 200 });
     } catch (error) {
         console.error('Auth GET error:', error);
         return NextResponse.json({ authenticated: false }, { status: 500 });

@@ -19,12 +19,14 @@ import { useAuth } from '../../contexts/AuthContext';
 import Loader from '../../components/common/Loader';
 import Footer from '../../components/layout/Footer';
 import PostDetailModal from '../../components/modals/PostDetailModal';
+import { MOCK_POSTS, MOCK_USERS } from '@/constants/mockData';
 
 // Local interfaces for ProfilePage to ensure types are available
 export interface User {
     id: string;
     username: string;
     avatar: string;
+    coverPhoto?: string | null;
     bio?: string | null;
     followers: number;
     following: number;
@@ -52,6 +54,44 @@ export interface Post {
         avatar: string;
     };
 }
+
+const getPreviewProfile = (): { user: User; posts: Post[] } => {
+    const previewUser = MOCK_USERS[0];
+    const previewPosts = MOCK_POSTS.slice(0, 6).map(post => ({
+        id: post.id,
+        image: post.image,
+        likes: post.likes,
+        comments: post.comments,
+        userId: previewUser.id,
+        caption: post.caption,
+        createdAt: post.createdAt,
+        isLiked: post.isLiked,
+        isSaved: post.isSaved,
+        user: {
+            id: previewUser.id,
+            username: previewUser.username,
+            name: previewUser.name,
+            avatar: previewUser.avatar
+        }
+    }));
+
+    return {
+        user: {
+            id: previewUser.id,
+            username: previewUser.username,
+            avatar: previewUser.avatar,
+            bio: previewUser.bio || null,
+            followers: previewUser.followers || 0,
+            following: 0,
+            website: previewUser.website || '',
+            category: previewUser.category || 'Digital Creator',
+            isPrivate: false,
+            posts: previewPosts,
+            shots: []
+        },
+        posts: previewPosts
+    };
+};
 
 const ProfilePage = () => {
     const { user: authUser, isLoading: authLoading } = useAuth();
@@ -116,6 +156,7 @@ const ProfilePage = () => {
                     id: authUser.id,
                     username: authUser.username,
                     avatar: authUser.avatar,
+                    coverPhoto: authUser.coverPhoto,
                     bio: (authUser as any).bio || null, // bio might be in authUser if we expanded it
                     followers: (authUser as any)._count?.followedBy || 0,
                     following: (authUser as any)._count?.following || 0,
@@ -129,6 +170,9 @@ const ProfilePage = () => {
                 setPostsState(formattedPosts);
             } catch (err) {
                 console.warn('Profile data fetch error:', err);
+                const preview = getPreviewProfile();
+                setUser(preview.user);
+                setPostsState(preview.posts);
             } finally {
                 setLoading(false);
             }
@@ -137,6 +181,9 @@ const ProfilePage = () => {
         if (authUser) {
             fetchProfileData();
         } else if (!authLoading) {
+            const preview = getPreviewProfile();
+            setUser(preview.user);
+            setPostsState(preview.posts);
             setLoading(false);
         }
     }, [authUser, authLoading]);
@@ -204,7 +251,10 @@ const ProfilePage = () => {
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 >
                     <div className={styles.coverPhoto}>
-                        <div className={styles.coverGradient} />
+                        <div
+                            className={styles.coverGradient}
+                            style={user.coverPhoto ? { backgroundImage: `url(${user.coverPhoto})`, backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}
+                        />
                         <div className={styles.neuralGridOverlay} />
                     </div>
 

@@ -47,7 +47,7 @@ const CreatePostPage = () => {
                     setCurrentUser(data);
                 }
             } catch (err) {
-                console.error('Failed to fetch user', err);
+                console.error('Failed to fetch user', err); 
             }
         };
         fetchMe();
@@ -62,23 +62,8 @@ const CreatePostPage = () => {
     };
 
     const processFiles = (files: File[]) => {
-        const availableSlots = 10 - mediaItems.length;
-        if (availableSlots <= 0) {
-            showToast('You can add up to 10 media items per post.', 'error');
-            return;
-        }
-
-        const validFiles = files.filter(file => {
-            const isMedia = file.type.startsWith('image/') || file.type.startsWith('video/');
-            const isWithinSizeLimit = file.size <= 50 * 1024 * 1024;
-            return isMedia && isWithinSizeLimit;
-        }).slice(0, availableSlots);
-
-        if (validFiles.length < files.length) {
-            showToast('Only images and videos up to 50 MB can be added.', 'error');
-        }
-
-        validFiles.forEach(file => {
+        files.forEach(file => {
+            if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) return;
             const type: 'image' | 'video' = file.type.startsWith('video/') ? 'video' : 'image';
             const objectUrl = URL.createObjectURL(file);
             setMediaItems(prev => [...prev, { url: objectUrl, file, type }]);
@@ -316,11 +301,6 @@ const CreatePostPage = () => {
                                     </div>
                                 )}
 
-                                <div className={styles.mediaSummary}>
-                                    <span>{mediaItems.length} {mediaItems.length === 1 ? 'item' : 'items'} ready to publish</span>
-                                    <span>Up to 10</span>
-                                </div>
-
                                 <div className={styles.captionArea}>
                                     <textarea
                                         className={styles.captionInput}
@@ -412,8 +392,7 @@ const CreatePostPage = () => {
                                 )}
                             </div>
 
-                            <p className={styles.uploadHint}>Drag and drop media here</p>
-                            <p className={styles.uploadMeta}>Images and videos up to 50 MB · Add up to 10 items</p>
+                            <p style={{ color: '#9ca3af', fontSize: '14px', fontWeight: 600 }}>Drag and drop media here</p>
                         </motion.div>
                     )}
                 </div>

@@ -7,6 +7,7 @@ interface User {
     id: string;
     username: string;
     avatar: string;
+    coverPhoto?: string | null;
     fullName?: string;
     email: string;
 }
@@ -32,7 +33,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
             const res = await fetch('/api/auth');
             const contentType = res.headers.get('content-type');
-            
+
+            if (res.status === 401) {
+                setUser(null);
+                localStorage.removeItem('viewer_demo_auth');
+                return;
+            }
+
             if (res.ok && contentType && contentType.includes('application/json')) {
                 const data = await res.json();
                 if (data.authenticated) {
@@ -47,7 +54,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 localStorage.removeItem('viewer_demo_auth');
             }
         } catch (err) {
-            console.error('Session check failed', err);
+            setUser(null);
+            localStorage.removeItem('viewer_demo_auth');
         } finally {
             setIsLoading(false);
             setIsInitialized(true);

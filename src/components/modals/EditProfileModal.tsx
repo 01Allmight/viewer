@@ -11,6 +11,7 @@ interface EditProfileModalProps {
         fullName: string;
         bio: string;
         avatar: string;
+        coverPhoto?: string | null;
         website?: string;
         category?: string;
         isPrivate?: boolean;
@@ -38,6 +39,61 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, in
         category: initialData.category || 'Digital Creator',
         isPrivate: initialData.isPrivate || false
     });
+    const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+
+    const uploadAvatar = async (file: File) => {
+        const contentType = file.type || 'image/jpeg';
+
+        try {
+            setIsUploadingAvatar(true);
+
+            const presignResponse = await fetch('/api/uploads', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fileName: file.name, contentType })
+            });
+
+            if (presignResponse.ok) {
+                const presignData = await presignResponse.json();
+
+                if (presignData.uploadUrl && presignData.publicUrl) {
+                    const uploadResponse = await fetch(presignData.uploadUrl, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': contentType },
+                        body: file
+                    });
+
+                    if (uploadResponse.ok) {
+                        return presignData.publicUrl;
+                    }
+                }
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const fallbackResponse = await fetch('/api/uploads', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!fallbackResponse.ok) {
+                throw new Error('Profile image upload failed.');
+            }
+
+            const fallbackData = await fallbackResponse.json();
+            if (!fallbackData.publicUrl) {
+                throw new Error('No profile image URL returned from storage.');
+            }
+
+            return fallbackData.publicUrl;
+        } catch (error) {
+            console.error('Avatar upload error:', error);
+            throw error;
+        } finally {
+            setIsUploadingAvatar(false);
+        }
+    };
 
     if (!isOpen) return null;
 
@@ -57,6 +113,36 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, in
         onClose();
     };
 
+    const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        try {
+            const uploadedUrl = await uploadAvatar(file);
+            setFormData(prev => ({ ...prev, avatar: uploadedUrl }));
+        } catch (error) {
+            console.error('Failed to change profile picture', error);
+            alert('Profile picture upload failed. Please try another image.');
+        } finally {
+            event.target.value = '';
+        }
+    };
+
+    const handleCoverPhotoChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        try {
+            const uploadedUrl = await uploadAvatar(file);
+            setFormData(prev => ({ ...prev, coverPhoto: uploadedUrl }));
+        } catch (error) {
+            console.error('Failed to change cover photo', error);
+            alert('Cover photo upload failed. Please try another image.');
+        } finally {
+            event.target.value = '';
+        }
+    };
+
     return (
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.modal} onClick={e => e.stopPropagation()}>
@@ -69,26 +155,53 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, in
 
                 <form onSubmit={handleSubmit} style={{ display: 'contents' }}>
                     <div className={styles.scrollArea}>
+                        <div className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <span className={styles.sectionTitle}>Profile Cover</span>
+                            </div>
+                            <div
+                                onClick={() => document.getElementById('cover-photo-input')?.click()}
+                                style={{
+                                    height: 120,
+                                    borderRadius: 16,
+                                    overflow: 'hidden',
+                                    cursor: 'pointer',
+                                    background: formData.coverPhoto ? `url(${formData.coverPhoto}) center / cover` : 'linear-gradient(120deg, #0f766e, #0ea5e9, #f59e0b)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: '#fff',
+                                    fontWeight: 700
+                                }}
+                            >
+                                <span>{formData.coverPhoto ? 'Change cover photo' : 'Add cover photo'}</span>
+                            </div>
+                            <input
+                                id="cover-photo-input"
+                                type="file"
+                                hidden
+                                accept="image/*"
+                                onChange={handleCoverPhotoChange}
+                            />
+                        </div>
+
                         {/* Avatar Section */}
                         <div className={styles.avatarSection}>
                             <div className={styles.avatarContainer} onClick={() => document.getElementById('avatar-input')?.click()}>
                                 <Image src={formData.avatar || 'https://i.pravatar.cc/150'} alt="Avatar" className={styles.avatar} width={120} height={120} />
                                 <div className={styles.avatarOverlay}>
-                                    <Camera size={32} />
+                                    {isUploadingAvatar ? <span style={{ fontSize: 12, fontWeight: 700 }}>UP</span> : <Camera size={32} />}
                                 </div>
                             </div>
                             <span className={styles.changePhotoText} onClick={() => document.getElementById('avatar-input')?.click()}>
-                                Change Profile Vision
+                                {isUploadingAvatar ? 'Uploading picture...' : 'Change Profile Vision'}
                             </span>
                             <input
                                 id="avatar-input"
                                 type="file"
                                 hidden
                                 accept="image/*"
-                                onChange={() => {
-                                    const url = prompt("Enter image URL:", formData.avatar);
-                                    if (url) setFormData(p => ({ ...p, avatar: url }));
-                                }}
+                                onChange={handleAvatarChange}
                             />
                         </div>
 

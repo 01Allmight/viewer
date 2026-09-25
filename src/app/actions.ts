@@ -387,6 +387,7 @@ export async function updateUserSettings(data: {
     website?: string;
     isPrivate?: boolean;
     avatar?: string;
+    coverPhoto?: string;
 }) {
     const schema = z.object({
         fullName: z.string().max(50).optional(),
@@ -395,6 +396,7 @@ export async function updateUserSettings(data: {
         website: z.string().url().or(z.literal('')).optional(),
         isPrivate: z.boolean().optional(),
         avatar: z.string().url().optional(),
+        coverPhoto: z.string().max(500).optional(),
     });
 
     try {
@@ -410,6 +412,7 @@ export async function updateUserSettings(data: {
                 website: validated.website,
                 isPrivate: validated.isPrivate,
                 avatar: validated.avatar,
+                coverPhoto: validated.coverPhoto,
             }
         });
 

@@ -8,7 +8,7 @@ import Loader from '@/components/common/Loader';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { formatDistanceToNow } from 'date-fns';
 import { pusherClient } from '@/lib/pusher';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, Sparkles, Flame } from 'lucide-react';
 import { triggerHapticNotification } from '@/lib/haptics';
 import { NotificationType } from '@capacitor/haptics';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
@@ -227,6 +227,23 @@ export default function Home() {
       </motion.div>
 
       <div className={styles.feedSection}>
+        <div className={styles.feedHeader}>
+          <div className={styles.feedHeaderText}>
+            <span className={styles.kicker}>Live feed</span>
+            <h1 className={styles.feedTitle}>{feedTab === 'forYou' ? 'Discover' : 'Following'}</h1>
+          </div>
+
+          <div className={styles.headerActions}>
+            <div className={styles.headerBadge}>
+              <Sparkles size={12} />
+              Fresh
+            </div>
+            <button className={styles.iconButton} type="button" aria-label="Trending">
+              <Flame size={16} />
+            </button>
+          </div>
+        </div>
+
         {/* Feed Segmented Switcher Tabs */}
         <div className={styles.tabBarContainer}>
           <div className={styles.tabGroup}>
@@ -244,7 +261,7 @@ export default function Home() {
                   transition={{ type: 'spring', stiffness: 420, damping: 32 }}
                 />
               )}
-              For You
+              <span className={styles.tabLabel}>For You</span>
             </button>
             <button
               className={`${styles.tabBtn} ${feedTab === 'following' ? styles.active : ''}`}
@@ -260,13 +277,17 @@ export default function Home() {
                   transition={{ type: 'spring', stiffness: 420, damping: 32 }}
                 />
               )}
-              Following
+              <span className={styles.tabLabel}>Following</span>
             </button>
           </div>
         </div>
 
         {/* Stories Section Card */}
         <div className={styles.storyBarCard}>
+          <div className={styles.storyTopBar}>
+            <span className={styles.storyTitle}>Stories</span>
+            <span className={styles.storyMeta}><Flame size={12} /> Trending now</span>
+          </div>
           <StoryBar />
         </div>
 

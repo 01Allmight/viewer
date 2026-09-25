@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Camera, Heart, Sun, Moon, Search, MessageSquare } from 'lucide-react';
+import { Camera, Heart, Sun, Moon, Search, MessageSquare, Sparkles } from 'lucide-react';
 import styles from './TopHeader.module.css';
 import { usePathname } from 'next/navigation';
 import NotificationModal from '../modals/NotificationModal';
@@ -88,14 +88,20 @@ const TopHeader = () => {
 
                     {/* Theme Toggle Button */}
                     <button
-                        className={styles.iconBtn}
+                        className={`${styles.themeToggleBtn} ${theme === 'dark' ? styles.themeToggleDark : styles.themeToggleLight}`}
                         onClick={() => {
                             toggleTheme();
                             triggerHaptic(ImpactStyle.Light);
                         }}
                         aria-label="Toggle theme"
+                        type="button"
                     >
-                        {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                        <span className={styles.themeToggleGlow} />
+                        <span className={styles.themeToggleIcon}>
+                            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+                        </span>
+                        <span className={styles.themeToggleLabel}>{theme === 'dark' ? 'Light' : 'Dark'}</span>
+                        <Sparkles size={12} className={styles.themeSparkle} />
                     </button>
 
                     {/* Notifications Button */}
