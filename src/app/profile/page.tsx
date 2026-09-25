@@ -19,6 +19,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Loader from '../../components/common/Loader';
 import Footer from '../../components/layout/Footer';
 import PostDetailModal from '../../components/modals/PostDetailModal';
+import FollowersModal from '../../components/modals/FollowersModal';
 import { MOCK_POSTS, MOCK_USERS } from '@/constants/mockData';
 
 // Local interfaces for ProfilePage to ensure types are available
@@ -99,6 +100,9 @@ const ProfilePage = () => {
     const [loading, setLoading] = useState(true);
     const [selectedPost, setSelectedPost] = useState<Post | null>(null);
     const [isArchiveOpen, setIsArchiveOpen] = useState(false);
+    const [connectionModal, setConnectionModal] = useState<'followers' | 'following' | null>(null);
+    const [connectionItems, setConnectionItems] = useState<any[]>([]);
+    const [isLoadingConnections, setIsLoadingConnections] = useState(false);
 
     const searchParams = useSearchParams();
 
@@ -190,6 +194,30 @@ const ProfilePage = () => {
 
     const handleEditProfile = () => {
         setActiveTab('settings');
+    };
+
+    const openConnections = async (type: 'followers' | 'following') => {
+        setConnectionModal(type);
+        setIsLoadingConnections(true);
+        try {
+            const response = await fetch(`/api/users/me/${type}`);
+            if (response.ok) {
+                const items = await response.json();
+                setConnectionItems(items);
+                setUser(previous => previous ? {
+                    ...previous,
+                    followers: type === 'followers' ? items.length : previous.followers,
+                    following: type === 'following' ? items.length : previous.following
+                } : previous);
+            } else {
+                setConnectionItems([]);
+            }
+        } catch (error) {
+            console.error(`Failed to load ${type}:`, error);
+            setConnectionItems([]);
+        } finally {
+            setIsLoadingConnections(false);
+        }
     };
 
 
@@ -292,14 +320,14 @@ const ProfilePage = () => {
                                     <span className={styles.statNumber}>{user.posts.length}</span>
                                     <span className={styles.statLabel}>Visions</span>
                                 </div>
-                                <div className={styles.statItem}>
+                                <button className={styles.statItem} onClick={() => openConnections('followers')} type="button">
                                     <span className={styles.statNumber}>{formatFollowers(user.followers)}</span>
-                                    <span className={styles.statLabel}>Connections</span>
-                                </div>
-                                <div className={styles.statItem}>
+                                    <span className={styles.statLabel}>Followers</span>
+                                </button>
+                                <button className={styles.statItem} onClick={() => openConnections('following')} type="button">
                                     <span className={styles.statNumber}>{user.following}</span>
                                     <span className={styles.statLabel}>Following</span>
-                                </div>
+                                </button>
                             </div>
 
                             <div className={styles.bioSection}>
@@ -441,6 +469,13 @@ const ProfilePage = () => {
                     onClose={() => setSelectedPost(null)}
                 />
             )}
+
+            <FollowersModal
+                isOpen={connectionModal !== null}
+                onClose={() => setConnectionModal(null)}
+                title={connectionModal === 'following' ? 'Following' : 'Followers'}
+                items={isLoadingConnections ? [] : connectionItems}
+            />
         </div>
     );
 };

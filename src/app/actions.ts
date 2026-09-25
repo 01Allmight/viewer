@@ -236,11 +236,14 @@ export async function addComment(postId: string, text: string) {
 
     if (!cleanText) throw new Error('Comment cannot be empty');
 
-    await prisma.comment.create({
+    const comment = await prisma.comment.create({
         data: {
             text: cleanText,
             userId: user.id,
             postId
+        },
+        include: {
+            user: { select: { username: true, avatar: true } }
         }
     });
 
@@ -255,11 +258,7 @@ export async function addComment(postId: string, text: string) {
     }
 
     // Real-time update for comments
-    await pusherServer.trigger(`post-${postId}`, 'new-comment', {
-        text: cleanText,
-        username: user.username,
-        createdAt: new Date()
-    });
+    await pusherServer.trigger(`post-${postId}`, 'new-comment', comment);
 
     revalidatePath('/');
 }

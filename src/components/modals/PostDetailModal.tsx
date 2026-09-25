@@ -1,11 +1,21 @@
 'use client';
 
-import React, { useState } from 'react';
-import { X, Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Smile } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { X, Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Smile, Loader2 } from 'lucide-react';
 import styles from './PostDetailModal.module.css';
 import { Post } from '@/constants/mockData';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { addComment } from '@/app/actions';
+import { pusherClient } from '@/lib/pusher';
+import { formatDistanceToNow } from 'date-fns';
+
+interface CommentItem {
+    id: string;
+    text: string;
+    createdAt: string;
+    user: { username: string; avatar?: string | null };
+}
 
 interface PostDetailModalProps {
     post: Post;
@@ -18,6 +28,36 @@ const PostDetailModal: React.FC<PostDetailModalProps> = ({ post, isOpen, onClose
     const [isLiked, setIsLiked] = useState(post.isLiked);
     const [likesCount, setLikesCount] = useState(post.likes);
     const [isSaved, setIsSaved] = useState(post.isSaved);
+    const [comments, setComments] = useState<CommentItem[]>([]);
+    const [isLoadingComments, setIsLoadingComments] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const loadComments = async () => {
+            setIsLoadingComments(true);
+            try {
+                const response = await fetch(`/api/posts/${post.id}/comments`);
+                if (response.ok) setComments(await response.json());
+            } finally {
+                setIsLoadingComments(false);
+            }
+        };
+
+        loadComments();
+        const channelName = `post-${post.id}`;
+        const channel = pusherClient.subscribe(channelName);
+        const handleComment = (comment: CommentItem) => {
+            setComments(prev => prev.some(item => item.id === comment.id) ? prev : [...prev, comment]);
+        };
+        channel.bind('new-comment', handleComment);
+
+        return () => {
+            channel.unbind('new-comment', handleComment);
+            pusherClient.unsubscribe(channelName);
+        };
+    }, [isOpen, post.id]);
 
     if (!isOpen) return null;
 
@@ -26,11 +66,30 @@ const PostDetailModal: React.FC<PostDetailModalProps> = ({ post, isOpen, onClose
         setLikesCount(prev => !isLiked ? prev + 1 : prev - 1);
     };
 
-    const handlePostComment = (e: React.FormEvent) => {
+    const handlePostComment = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!comment.trim()) return;
+        if (!comment.trim() || isSubmitting) return;
+        const text = comment.trim();
+        const optimisticId = `optimistic-${Date.now()}`;
+        const optimisticComment: CommentItem = {
+            id: optimisticId,
+            text,
+            createdAt: new Date().toISOString(),
+            user: { username: 'You', avatar: undefined }
+        };
+        setComments(prev => [...prev, optimisticComment]);
         // In a real app, send to API
         setComment('');
+        setIsSubmitting(true);
+        try {
+            await addComment(post.id, text);
+            setComments(prev => prev.filter(item => item.id !== optimisticId));
+        } catch (error) {
+            setComments(prev => prev.filter(item => item.id !== optimisticId));
+            console.error('Failed to post comment:', error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -78,34 +137,21 @@ const PostDetailModal: React.FC<PostDetailModalProps> = ({ post, isOpen, onClose
                             </div>
                         </div>
 
-                        {/* Mock comments */}
-                        <div className={styles.commentItem}>
-                            <Image src="https://i.pravatar.cc/150?u=10" className={styles.avatar} alt="User" width={32} height={32} />
-                            <div className={styles.commentContent}>
-                                <div className={styles.commentText}>
-                                    <span className={styles.username}>awesome_user</span> This is such a cool shot! Love the colors. 🔥
-                                </div>
-                                <div className={styles.commentMeta}>
-                                    <span>2h</span>
-                                    <span>5 likes</span>
-                                    <span>Reply</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className={styles.commentItem}>
-                            <Image src="https://i.pravatar.cc/150?u=11" className={styles.avatar} alt="User" width={32} height={32} />
-                            <div className={styles.commentContent}>
-                                <div className={styles.commentText}>
-                                    <span className={styles.username}>photography_fan</span> Which camera did you use for this?
-                                </div>
-                                <div className={styles.commentMeta}>
-                                    <span>1h</span>
-                                    <span>2 likes</span>
-                                    <span>Reply</span>
+                        {isLoadingComments && <Loader2 className="animate-spin" size={24} />}
+                        {!isLoadingComments && comments.map(item => (
+                            <div className={styles.commentItem} key={item.id}>
+                                <Image src={item.user.avatar || 'https://i.pravatar.cc/150'} className={styles.avatar} alt={item.user.username} width={32} height={32} />
+                                <div className={styles.commentContent}>
+                                    <div className={styles.commentText}>
+                                        <span className={styles.username}>{item.user.username}</span> {item.text}
+                                    </div>
+                                    <div className={styles.commentMeta}>
+                                        <span>{formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}</span>
+                                        <span>Reply</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        ))}
                     </div>
 
                     {/* Actions Row */}
@@ -147,9 +193,9 @@ const PostDetailModal: React.FC<PostDetailModalProps> = ({ post, isOpen, onClose
                         <button
                             type="submit"
                             className={styles.postBtn}
-                            disabled={!comment.trim()}
+                            disabled={!comment.trim() || isSubmitting}
                         >
-                            Post
+                            {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : 'Post'}
                         </button>
                     </form>
                 </div>
