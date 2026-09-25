@@ -9,7 +9,7 @@ interface UseInfiniteScrollOptions {
 }
 
 export const useInfiniteScroll = (
-  callback: () => void,
+  callback: () => void | Promise<void>,
   options: UseInfiniteScrollOptions = {}
 ) => {
   const { threshold = 0.1, rootMargin = '0px', enabled = true } = options;
@@ -22,7 +22,9 @@ export const useInfiniteScroll = (
       const [entry] = entries;
       if (entry.isIntersecting && enabled && !isLoading) {
         setIsLoading(true);
-        callback();
+        Promise.resolve()
+          .then(callback)
+          .finally(() => setIsLoading(false));
       }
     },
     [callback, enabled, isLoading]
@@ -44,7 +46,5 @@ export const useInfiniteScroll = (
     };
   }, [handleObserver, threshold, rootMargin]);
 
-  const endLoading = () => setIsLoading(false);
-
-  return { elementRef, isLoading, endLoading };
+  return { elementRef, isLoading };
 };

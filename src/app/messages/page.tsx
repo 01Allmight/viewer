@@ -43,7 +43,7 @@ import {
     broadcastReaction,
     deleteMessage
 } from '@/app/actions';
-import { pusherClient } from '@/lib/pusher';
+import { chatChannel, isPusherConfigured, pusherClient, userConversationChannel } from '@/lib/pusher';
 
 const QUICK_EMOJIS = ['❤️', '🔥', '😂', '😮', '😢', '👏', '🎉', '🙌'];
 const EMOJI_DRAWER = [
@@ -158,7 +158,10 @@ const MessagesPage = () => {
         fetchMsgs();
 
         // Subscribe to Pusher channel for this chat
-        const channel = pusherClient.subscribe(`chat-${selectedConversation}`);
+        if (!isPusherConfigured) return;
+
+        const channelName = chatChannel(selectedConversation);
+        const channel = pusherClient.subscribe(channelName);
 
         channel.bind('new-message', (message: MessageItem) => {
             setMessages(prev => {
@@ -196,7 +199,7 @@ const MessagesPage = () => {
         });
 
         return () => {
-            pusherClient.unsubscribe(`chat-${selectedConversation}`);
+            pusherClient.unsubscribe(channelName);
         };
     }, [selectedConversation, currentUser?.id]);
 
@@ -204,7 +207,10 @@ const MessagesPage = () => {
     useEffect(() => {
         if (!currentUser?.id) return;
 
-        const convChannel = pusherClient.subscribe(`user-conv-${currentUser.id}`);
+        if (!isPusherConfigured) return;
+
+        const channelName = userConversationChannel(currentUser.id);
+        const convChannel = pusherClient.subscribe(channelName);
         convChannel.bind('conversation-update', (data: any) => {
             setConversations(prev => {
                 const existsIdx = prev.findIndex(c => c.id === data.conversationId);
@@ -224,7 +230,7 @@ const MessagesPage = () => {
         });
 
         return () => {
-            pusherClient.unsubscribe(`user-conv-${currentUser.id}`);
+            pusherClient.unsubscribe(channelName);
         };
     }, [currentUser?.id]);
 

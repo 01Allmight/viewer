@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { MediaService } from '@/services/media-service';
 import { sendWebPushNotification } from '@/lib/push';
-import { pusherServer } from '@/lib/pusher';
+import { chatChannel, pusherServer, userConversationChannel } from '@/lib/pusher';
 import { requireAuth } from '@/lib/auth';
 import { z } from 'zod';
 
@@ -539,7 +539,7 @@ export async function sendMessage(conversationId: string, content: string) {
     });
 
     // Trigger Pusher for real-time delivery
-    await pusherServer.trigger(`chat-${conversationId}`, 'new-message', message);
+    await pusherServer.trigger(chatChannel(conversationId), 'new-message', message);
 
     // Trigger update for conversation list (for other participant)
     const otherParticipant = await prisma.user.findFirst({
@@ -550,7 +550,7 @@ export async function sendMessage(conversationId: string, content: string) {
     });
 
     if (otherParticipant) {
-        await pusherServer.trigger(`user-conv-${otherParticipant.id}`, 'conversation-update', {
+        await pusherServer.trigger(userConversationChannel(otherParticipant.id), 'conversation-update', {
             conversationId,
             lastMessage: message
         });
@@ -602,7 +602,14 @@ export async function startConversation(participantUsername: string) {
 export async function broadcastTyping(conversationId: string, isTyping: boolean) {
     const user = await requireAuth();
     try {
-        await pusherServer.trigger(`chat-${conversationId}`, 'typing-status', {
+        const conversation = await prisma.conversation.findFirst({
+            where: { id: conversationId, participants: { some: { id: user.id } } },
+            select: { id: true }
+        });
+
+        if (!conversation) return { success: false };
+
+        await pusherServer.trigger(chatChannel(conversationId), 'typing-status', {
             userId: user.id,
             username: user.username,
             isTyping
@@ -617,7 +624,18 @@ export async function broadcastTyping(conversationId: string, isTyping: boolean)
 export async function broadcastReaction(conversationId: string, messageId: string, emoji: string) {
     const user = await requireAuth();
     try {
-        await pusherServer.trigger(`chat-${conversationId}`, 'message-reaction', {
+        const message = await prisma.message.findFirst({
+            where: {
+                id: messageId,
+                conversationId,
+                conversation: { participants: { some: { id: user.id } } }
+            },
+            select: { id: true }
+        });
+
+        if (!message) return { success: false };
+
+        await pusherServer.trigger(chatChannel(conversationId), 'message-reaction', {
             messageId,
             userId: user.id,
             username: user.username,
@@ -645,7 +663,7 @@ export async function deleteMessage(conversationId: string, messageId: string) {
             where: { id: messageId }
         });
 
-        await pusherServer.trigger(`chat-${conversationId}`, 'message-deleted', {
+        await pusherServer.trigger(chatChannel(conversationId), 'message-deleted', {
             messageId
         });
 

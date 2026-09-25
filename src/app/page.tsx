@@ -99,10 +99,8 @@ export default function Home() {
     }
   }, []);
 
-  const loadMoreItems = useCallback(async (isFetchingMore: boolean, currentHasMore: boolean, currentPage: number, onEndLoading: () => void) => {
-    if (isFetchingMore || !currentHasMore) return;
-
-    const nextPage = currentPage + 1;
+  const loadMoreItems = useCallback(async () => {
+    const nextPage = page + 1;
     const data = await fetchContent(nextPage);
 
     if (data.length === 0) {
@@ -111,11 +109,10 @@ export default function Home() {
       setFeedItems(prev => [...prev, ...data]);
       setPage(nextPage);
     }
-    onEndLoading();
-  }, [fetchContent]);
+  }, [fetchContent, page]);
 
-  const { elementRef: lastElementRef, isLoading: fetchingMore, endLoading } = useInfiniteScroll(
-    () => loadMoreItems(fetchingMore, hasMore, page, endLoading),
+  const { elementRef: lastElementRef, isLoading: fetchingMore } = useInfiniteScroll(
+    loadMoreItems,
     { enabled: hasMore && !loading }
   );
 

@@ -38,7 +38,7 @@ export async function GET(request: Request) {
         });
         // If no shots found in DB, fall back to mock data
         if (!shots || shots.length === 0) {
-            const fallback = MOCK_SHOTS.map(s => ({
+            const fallback = MOCK_SHOTS.slice(skip, skip + limit).map(s => ({
                 id: String(s.id),
                 video: s.video,
                 caption: s.caption,
@@ -58,7 +58,11 @@ export async function GET(request: Request) {
         console.error('API Error (GET /api/shots):', error);
         // If Prisma or DB is not available, return mock shots so frontend still works
         try {
-            const fallback = MOCK_SHOTS.map(s => ({
+            const { searchParams } = new URL(request.url);
+            const page = parseInt(searchParams.get('page') || '1');
+            const limit = parseInt(searchParams.get('limit') || '10');
+            const skip = (page - 1) * limit;
+            const fallback = MOCK_SHOTS.slice(skip, skip + limit).map(s => ({
                 id: String(s.id),
                 video: s.video,
                 caption: s.caption,

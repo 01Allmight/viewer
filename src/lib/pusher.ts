@@ -7,6 +7,13 @@ const isServerConfigured =
     process.env.PUSHER_SECRET &&
     process.env.PUSHER_CLUSTER;
 
+export const isPusherConfigured = Boolean(
+    process.env.NEXT_PUBLIC_PUSHER_KEY && process.env.NEXT_PUBLIC_PUSHER_CLUSTER
+);
+
+export const chatChannel = (conversationId: string) => `private-chat-${conversationId}`;
+export const userConversationChannel = (userId: string) => `private-user-conv-${userId}`;
+
 // Server-side Pusher client (Lazy initialized or Mocked)
 export const pusherServer = isServerConfigured
     ? new PusherServer({
@@ -27,4 +34,5 @@ export const pusherServer = isServerConfigured
 export const pusherClient = new PusherClient(process.env.NEXT_PUBLIC_PUSHER_KEY || 'mock_key', {
     cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER || 'mt1',
     enabledTransports: ['ws', 'wss'],
+    authEndpoint: '/api/pusher/auth',
 });
