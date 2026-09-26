@@ -1,4 +1,4 @@
-.reelsContainer {
+﻿.reelsContainer {
     height: calc(100vh - var(--header-height));
     background: #fdfdff;
     overflow: hidden;
@@ -279,7 +279,7 @@
     color: white;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
     min-height: 18px;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     line-height: 1;
 }
 
@@ -290,7 +290,7 @@
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
 }
 
 .actionBtn span {

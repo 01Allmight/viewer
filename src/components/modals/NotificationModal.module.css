@@ -1,4 +1,4 @@
-/* Overlay with refined blur */
+﻿/* Overlay with refined blur */
 .overlay {
     position: fixed;
     inset: 0;
@@ -65,7 +65,7 @@
 .title {
     font-size: 24px;
     font-weight: 800;
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-space-grotesk), sans-serif;
     letter-spacing: -0.02em;
     color: #0f172a;
     margin: 0;
@@ -81,7 +81,7 @@
     border-radius: 12px;
     background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     color: white;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     font-size: 12px;
     font-weight: 800;
     display: flex;
@@ -155,7 +155,7 @@
 .tab {
     padding: 8px 18px;
     border-radius: 20px;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     font-size: 14px;
     font-weight: 700;
     color: #64748b;
@@ -323,7 +323,7 @@
 }
 
 .notifContent p {
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     font-size: 15px;
     line-height: 1.4;
     color: #475569;
@@ -335,7 +335,7 @@
 }
 
 .username {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-space-grotesk), sans-serif;
     font-weight: 800;
     color: #0f172a;
     font-size: 16px;
@@ -347,7 +347,7 @@
 
 .time {
     display: block;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     font-size: 12px;
     margin-top: 4px;
     color: #94a3b8;
@@ -379,7 +379,7 @@
 .followBtn {
     padding: 8px 20px;
     border-radius: 14px;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     font-size: 14px;
     font-weight: 700;
     background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
@@ -435,7 +435,7 @@
 }
 
 .emptyText {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-space-grotesk), sans-serif;
     font-size: 20px;
     color: #0f172a;
     font-weight: 800;
@@ -447,7 +447,7 @@
 }
 
 .emptySubtext {
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     font-size: 15px;
     color: #64748b;
 }

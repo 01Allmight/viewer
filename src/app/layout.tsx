@@ -1,12 +1,10 @@
 import React, { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
-import { Inter, Syne, Outfit, Manrope } from "next/font/google";
+import { DM_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
-const syne = Syne({ subsets: ["latin"], display: "swap", variable: "--font-syne" });
-const outfit = Outfit({ subsets: ["latin"], display: "swap", variable: "--font-outfit" });
-const manrope = Manrope({ subsets: ["latin"], display: "swap", variable: "--font-manrope" });
+const dmSans = DM_Sans({ subsets: ["latin"], display: "swap", variable: "--font-dm-sans" });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], display: "swap", variable: "--font-space-grotesk" });
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "../contexts/AuthContext";
 import { ToastProvider } from "@/contexts/ToastContext";
@@ -71,7 +69,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} ${syne.variable} ${outfit.variable} ${manrope.variable}`} suppressHydrationWarning>
+      <body className={`${dmSans.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
         <AuthProvider>
           <ThemeProvider>
             <ToastProvider>

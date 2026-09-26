@@ -1,4 +1,4 @@
-.storyBar {
+﻿.storyBar {
     display: flex;
     gap: 18px;
     padding: 20px 0;
@@ -155,7 +155,7 @@
     flex-direction: column;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
     color: white;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
 }
 
 .creatorHeader {
@@ -169,7 +169,7 @@
 .creatorTitle {
     font-size: 18px;
     font-weight: 800;
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-space-grotesk), sans-serif;
     margin: 0;
 }
 

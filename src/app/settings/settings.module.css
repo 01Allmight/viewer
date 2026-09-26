@@ -1,4 +1,4 @@
-.settingsPage {
+﻿.settingsPage {
     min-height: 100vh;
     padding: 60px 20px;
     display: flex;
@@ -53,7 +53,7 @@
     margin-bottom: 40px;
     color: white;
     letter-spacing: -1.5px;
-    font-family: 'Syne', 'Inter', sans-serif;
+    font-family: var(--font-space-grotesk), var(--font-dm-sans), sans-serif;
 }
 
 .navItem {
@@ -135,7 +135,7 @@
     margin-bottom: 40px;
     color: white;
     letter-spacing: -1.5px;
-    font-family: 'Syne', 'Inter', sans-serif;
+    font-family: var(--font-space-grotesk), var(--font-dm-sans), sans-serif;
 }
 
 /* Forms */
@@ -161,7 +161,7 @@
     border-radius: 16px;
     padding: 15px 20px;
     color: white;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     font-size: 16px;
     font-weight: 500;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

@@ -5,7 +5,7 @@
     overflow: hidden;
     background: #f7f9ff;
     color: #0f172a;
-    font-family: 'Outfit', 'Inter', sans-serif;
+    font-family: var(--font-dm-sans), var(--font-dm-sans), sans-serif;
 }
 
 .lightMode {
@@ -75,7 +75,7 @@
     font-size: clamp(2rem, 3.2vw, 3rem);
     line-height: 1;
     letter-spacing: -0.06em;
-    font-family: 'Syne', 'Inter', sans-serif;
+    font-family: var(--font-space-grotesk), var(--font-dm-sans), sans-serif;
     font-weight: 800;
     background: linear-gradient(135deg, #0f172a 0%, #4f46e5 32%, #8b5cf6 62%, #ec4899 100%);
     -webkit-background-clip: text;
@@ -140,7 +140,7 @@
     background: transparent;
     color: #0f172a;
     font-size: 1rem;
-    font-family: 'Outfit', 'Inter', sans-serif;
+    font-family: var(--font-dm-sans), var(--font-dm-sans), sans-serif;
     font-weight: 500;
 }
 
@@ -239,7 +239,7 @@
     font-size: clamp(1.5rem, 2.5vw, 2.2rem);
     line-height: 1.1;
     letter-spacing: -0.05em;
-    font-family: 'Syne', 'Inter', sans-serif;
+    font-family: var(--font-space-grotesk), var(--font-dm-sans), sans-serif;
     color: #0f172a;
 }
 
@@ -468,3 +468,4 @@
         padding: 9px 12px;
     }
 }
+

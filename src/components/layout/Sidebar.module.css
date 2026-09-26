@@ -1,25 +1,23 @@
-.sidebar {
+﻿.sidebar {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    width: var(--sidebar-width, 240px);
+    width: var(--sidebar-width, 256px);
     height: 100vh;
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(17, 24, 39, 0.84) 100%);
-    border-right: 1px solid rgba(148, 163, 184, 0.18);
+    background: var(--background-elevated);
+    border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
-    padding: 24px 16px;
+    padding: 28px 18px 20px;
     z-index: 900;
     transition: width var(--transition-smooth), transform var(--transition-smooth);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.04);
+    box-shadow: 8px 0 30px rgba(15, 23, 42, 0.04);
 }
 
 /* Brand Logo Section */
 .logoSection {
-    padding: 8px 12px 28px;
+    padding: 4px 10px 34px;
 }
 
 .logoLink {
@@ -28,17 +26,18 @@
     gap: 12px;
     text-decoration: none;
     color: var(--foreground);
+    letter-spacing: -0.03em;
 }
 
 .logoIcon {
     width: 40px;
     height: 40px;
-    border-radius: var(--radius-md);
-    background: linear-gradient(135deg, #4f46e5 0%, #8b5cf6 52%, #ec4899 100%);
+    border-radius: 12px;
+    background: var(--foreground);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 10px 24px rgba(99, 102, 241, 0.35);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
     flex-shrink: 0;
 }
 
@@ -46,13 +45,13 @@
     font-size: 24px;
     font-weight: 800;
     letter-spacing: -0.04em;
-    font-family: var(--font-syne), sans-serif;
+    font-family: var(--font-space-grotesk), sans-serif;
     color: var(--foreground);
     line-height: 1;
 }
 
 .brandDot {
-    color: var(--primary);
+    color: #e34d72;
 }
 
 /* Nav Items */
@@ -60,9 +59,25 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
     overflow-y: auto;
     scrollbar-width: none;
+}
+
+.navGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 22px;
+}
+
+.groupLabel {
+    padding: 0 13px 7px;
+    color: var(--foreground-muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
 }
 
 .navItems::-webkit-scrollbar {
@@ -73,22 +88,22 @@
     position: relative;
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 12px 14px;
-    border-radius: var(--radius-md);
-    color: rgba(226, 232, 240, 0.8);
+    gap: 13px;
+    padding: 12px 13px;
+    border-radius: 12px;
+    color: var(--foreground-muted);
     text-decoration: none;
     font-size: 15px;
     font-weight: 600;
-    font-family: var(--font-inter), sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     transition: color var(--transition-fast), transform var(--transition-fast), background var(--transition-fast);
     z-index: 1;
 }
 
 .navItem:hover {
-    color: #ffffff;
+    color: var(--foreground);
     transform: translateX(3px);
-    background: rgba(99, 102, 241, 0.08);
+    background: var(--secondary);
 }
 
 .navItem.active {
@@ -99,11 +114,11 @@
 .activePill {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(91, 108, 255, 0.2) 0%, rgba(168, 85, 247, 0.14) 100%);
-    border: 1px solid rgba(129, 140, 248, 0.28);
-    border-radius: var(--radius-md);
+    background: #fff0f3;
+    border: 1px solid rgba(227, 77, 114, 0.18);
+    border-radius: 12px;
     z-index: -1;
-    box-shadow: 0 10px 20px rgba(79, 70, 229, 0.12);
+    box-shadow: none;
 }
 
 .iconWrap {
@@ -125,7 +140,7 @@
 }
 
 .navItem.active .navIcon {
-    color: var(--primary);
+    color: #e34d72;
 }
 
 .label {
@@ -149,8 +164,8 @@
     justify-content: space-between;
     padding: 8px 12px;
     border-radius: var(--radius-md);
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.14), rgba(168, 85, 247, 0.08));
-    border: 1px solid rgba(129, 140, 248, 0.18);
+    background: var(--secondary);
+    border: 1px solid var(--border);
 }
 
 .themeLabel {

@@ -1,4 +1,4 @@
-.backdrop {
+﻿.backdrop {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
@@ -52,7 +52,7 @@
 }
 
 .headerTitle {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-space-grotesk), sans-serif;
     font-size: 17px;
     font-weight: 800;
     color: #0f172a;
@@ -98,7 +98,7 @@
     color: #94a3b8;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     margin-bottom: 16px;
 }
 
@@ -178,7 +178,7 @@
     font-size: 11px;
     font-weight: 600;
     color: #475569;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     max-width: 52px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -255,7 +255,7 @@
     font-size: 15px;
     font-weight: 600;
     color: #1e293b;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     transition: color 0.2s;
 }
 

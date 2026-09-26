@@ -1,4 +1,4 @@
-.profile {
+﻿.profile {
     padding: 40px 0;
     position: relative;
     z-index: 10;
@@ -164,7 +164,7 @@
     font-weight: 800;
     letter-spacing: -0.03em;
     color: var(--foreground);
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-space-grotesk), sans-serif;
 }
 
 .actionButtons {
@@ -243,7 +243,7 @@
     font-weight: 900;
     color: var(--foreground);
     letter-spacing: -0.05em;
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-space-grotesk), sans-serif;
     line-height: 1;
 }
 
@@ -254,7 +254,7 @@
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-top: 6px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
 }
 
 /* Bio Section */
@@ -268,7 +268,7 @@
     color: var(--foreground);
     margin-bottom: 6px;
     letter-spacing: -0.03em;
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-space-grotesk), sans-serif;
 }
 
 .categoryLabel {
@@ -280,7 +280,7 @@
     border-radius: 12px;
     margin-bottom: 16px;
     display: inline-block;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     letter-spacing: 0.02em;
 }
 
@@ -289,7 +289,7 @@
     line-height: 1.7;
     color: var(--foreground-muted);
     font-weight: 400;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
 }
 
 /* Tabs Redesign */
@@ -315,7 +315,7 @@
     cursor: pointer;
     position: relative;
     transition: color 0.3s ease;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     text-transform: uppercase;
 }
 
@@ -634,7 +634,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    font-family: 'Syne', 'Inter', sans-serif;
+    font-family: var(--font-space-grotesk), var(--font-dm-sans), sans-serif;
 }
 
 .activityList {
@@ -983,7 +983,7 @@
     margin-bottom: 32px;
     color: white;
     letter-spacing: -1px;
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-space-grotesk), sans-serif;
 }
 
 .settingsNavItem {
@@ -1037,7 +1037,7 @@
     margin-bottom: 32px;
     color: white;
     letter-spacing: -1px;
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-space-grotesk), sans-serif;
 }
 
 .settingsFormGroup {
@@ -1062,7 +1062,7 @@
     border-radius: 16px;
     padding: 14px 18px;
     color: white;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     font-size: 15px;
     font-weight: 500;
     transition: all 0.3s ease;

@@ -1,4 +1,4 @@
-.backdrop {
+﻿.backdrop {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
@@ -53,7 +53,7 @@
 }
 
 .headerTitle {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-space-grotesk), sans-serif;
     font-size: 17px;
     font-weight: 800;
     color: #0f172a;
@@ -136,7 +136,7 @@
 
 .commentText {
     font-size: 14px;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     color: #1e293b;
     line-height: 1.5;
     font-weight: 400;
@@ -149,7 +149,7 @@
 .commentUsername {
     font-weight: 700;
     color: #0f172a;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
 }
 
 [data-theme='dark'] .commentUsername {
@@ -166,7 +166,7 @@
 .commentTime {
     font-size: 12px;
     color: #94a3b8;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     font-weight: 500;
 }
 
@@ -174,7 +174,7 @@
     font-size: 12px;
     color: #64748b;
     font-weight: 700;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     background: none;
     border: none;
     cursor: pointer;
@@ -208,7 +208,7 @@
     font-size: 11px;
     font-weight: 700;
     color: #94a3b8;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     min-height: 14px;
 }
 
@@ -254,7 +254,7 @@
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 24px;
     font-size: 14px;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     font-weight: 500;
     color: #0f172a;
     outline: none;

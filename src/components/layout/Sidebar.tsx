@@ -24,14 +24,29 @@ const Sidebar = () => {
     const pathname = usePathname();
     const { user } = useAuth();
 
-    const navItems = [
-        { icon: Home, label: 'Home', href: '/' },
-        { icon: Search, label: 'Search', href: '/search' },
-        { icon: Film, label: 'Reels', href: '/reels' },
-        { icon: MessageCircle, label: 'Messages', href: '/messages' },
-        { icon: PlusSquare, label: 'Create', href: '/create' },
-        { icon: User, label: 'Profile', href: '/profile' },
-        { icon: Settings, label: 'Settings', href: '/settings' },
+    const navGroups = [
+        {
+            label: 'Explore',
+            items: [
+                { icon: Home, label: 'Home', href: '/' },
+                { icon: Search, label: 'Search', href: '/search' },
+                { icon: Film, label: 'Reels', href: '/reels' },
+            ]
+        },
+        {
+            label: 'Create',
+            items: [
+                { icon: MessageCircle, label: 'Messages', href: '/messages' },
+                { icon: PlusSquare, label: 'Create', href: '/create' },
+            ]
+        },
+        {
+            label: 'Account',
+            items: [
+                { icon: User, label: 'Profile', href: '/profile' },
+                { icon: Settings, label: 'Settings', href: '/settings' },
+            ]
+        }
     ];
 
     return (
@@ -54,34 +69,39 @@ const Sidebar = () => {
 
             {/* Navigation List */}
             <div className={styles.navItems}>
-                {navItems.map((item) => {
-                    const isActive = pathname === item.href;
-                    const Icon = item.icon;
+                {navGroups.map((group) => (
+                    <div className={styles.navGroup} key={group.label}>
+                        <span className={styles.groupLabel}>{group.label}</span>
+                        {group.items.map((item) => {
+                            const isActive = pathname === item.href;
+                            const Icon = item.icon;
 
-                    return (
-                        <Link
-                            key={item.label}
-                            href={item.href}
-                            className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-                        >
-                            {isActive && (
-                                <motion.div
-                                    layoutId="sidebarActivePill"
-                                    className={styles.activePill}
-                                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                                />
-                            )}
-                            <div className={styles.iconWrap}>
-                                <Icon
-                                    size={22}
-                                    strokeWidth={isActive ? 2.5 : 1.9}
-                                    className={styles.navIcon}
-                                />
-                            </div>
-                            <span className={styles.label}>{item.label}</span>
-                        </Link>
-                    );
-                })}
+                            return (
+                                <Link
+                                    key={item.label}
+                                    href={item.href}
+                                    className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                                >
+                                    {isActive && (
+                                        <motion.div
+                                            layoutId="sidebarActivePill"
+                                            className={styles.activePill}
+                                            transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                                        />
+                                    )}
+                                    <div className={styles.iconWrap}>
+                                        <Icon
+                                            size={21}
+                                            strokeWidth={isActive ? 2.5 : 1.9}
+                                            className={styles.navIcon}
+                                        />
+                                    </div>
+                                    <span className={styles.label}>{item.label}</span>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                ))}
             </div>
 
             {/* Bottom Actions & User Profile Card */}

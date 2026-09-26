@@ -6,7 +6,7 @@ import styles from './StoryBar.module.css';
 import { Plus, Loader2, Image as LucideImage, Sparkles, Music, BarChart2, X, Send } from 'lucide-react';
 import StoryViewer from '../modals/StoryViewer';
 import Image from 'next/image';
-import { pusherClient } from '@/lib/pusher';
+import { isPusherConfigured, pusherClient } from '@/lib/pusher';
 import { createStory } from '@/app/actions';
 
 const FILTER_PRESETS = [
@@ -51,8 +51,12 @@ const StoryBar = () => {
                 if (res.ok) {
                     const data = await res.json();
                     if (Array.isArray(data) && data.length > 0) {
-                        setStories(data);
-                        setViewerStories(data);
+                        const normalizedStories = data.map((group: any) => ({
+                            ...group,
+                            slides: group.slides || group.stories || (group.image ? [group] : [])
+                        }));
+                        setStories(normalizedStories);
+                        setViewerStories(normalizedStories);
                         return;
                     }
                 }
@@ -72,6 +76,8 @@ const StoryBar = () => {
 
     // Real-time Stories
     useEffect(() => {
+        if (!isPusherConfigured) return;
+
         const channel = pusherClient.subscribe('stories');
 
         channel.bind('new-story', (data: any) => {

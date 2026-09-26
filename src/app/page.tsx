@@ -7,7 +7,7 @@ import styles from './home.module.css';
 import Loader from '@/components/common/Loader';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { formatDistanceToNow } from 'date-fns';
-import { pusherClient } from '@/lib/pusher';
+import { isPusherConfigured, pusherClient } from '@/lib/pusher';
 import { RefreshCw, Sparkles, Flame } from 'lucide-react';
 import { triggerHapticNotification } from '@/lib/haptics';
 import { NotificationType } from '@capacitor/haptics';
@@ -169,6 +169,8 @@ export default function Home() {
 
   // Real-time Updates
   useEffect(() => {
+    if (!isPusherConfigured) return;
+
     const channel = pusherClient.subscribe('feed');
     // ... (bind events kept)
     return () => { pusherClient.unsubscribe('feed'); };

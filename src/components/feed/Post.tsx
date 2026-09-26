@@ -16,7 +16,7 @@ import PostDetailModal from '../modals/PostDetailModal';
 import { formatDistanceToNow } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { pusherClient } from '@/lib/pusher';
+import { isPusherConfigured, pusherClient } from '@/lib/pusher';
 import { triggerHaptic, triggerHapticNotification } from '@/lib/haptics';
 import { ImpactStyle, NotificationType } from '@capacitor/haptics';
 import RichText from '../common/RichText';
@@ -78,6 +78,8 @@ const Post: React.FC<PostProps> = ({ id, type = 'post', user, image, video, medi
 
     // Real-time Listeners
     React.useEffect(() => {
+        if (!isPusherConfigured) return;
+
         const channelName = `${type}-${id}`;
         const channel = pusherClient.subscribe(channelName);
 

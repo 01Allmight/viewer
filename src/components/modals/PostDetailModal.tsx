@@ -7,7 +7,7 @@ import { Post } from '@/constants/mockData';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { addComment } from '@/app/actions';
-import { pusherClient } from '@/lib/pusher';
+import { isPusherConfigured, pusherClient } from '@/lib/pusher';
 import { formatDistanceToNow } from 'date-fns';
 
 interface CommentItem {
@@ -46,6 +46,8 @@ const PostDetailModal: React.FC<PostDetailModalProps> = ({ post, isOpen, onClose
         };
 
         loadComments();
+        if (!isPusherConfigured) return;
+
         const channelName = `post-${post.id}`;
         const channel = pusherClient.subscribe(channelName);
         const handleComment = (comment: CommentItem) => {

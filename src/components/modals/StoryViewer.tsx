@@ -242,10 +242,14 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, initialStoryIndex, i
 
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                        src={finalImageUrl}
+                        src={finalImageUrl || '/icons/icon-192.png'}
                         alt="Story"
                         className={styles.storyImage}
                         style={{ filter: filterStyle }}
+                        onError={(event) => {
+                            event.currentTarget.onerror = null;
+                            event.currentTarget.src = '/icons/icon-192.png';
+                        }}
                     />
 
                     {/* Interactive Poll Sticker */}

@@ -1,4 +1,4 @@
-.overlay {
+﻿.overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -122,13 +122,13 @@
 .username {
     font-weight: 700;
     font-size: 14px;
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-space-grotesk), sans-serif;
 }
 
 .time {
     font-size: 11px;
     opacity: 0.75;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
 }
 
 /* Sound Badge Overlay */
@@ -216,7 +216,7 @@
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
     z-index: 20;
     color: white;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
 }
 
 .pollQuestion {
@@ -338,7 +338,7 @@
     padding: 10px 16px;
     color: white;
     font-size: 13px;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     outline: none;
 }
 
